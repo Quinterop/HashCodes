@@ -1,6 +1,7 @@
 package TPs.TP2;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -17,13 +18,15 @@ public class Parsing {
         int nbVilles, busA, busB, busC = 0;
         int ficNumLine = 0;
         ArrayList<String> ficLines = new ArrayList<String>();
-        HashMap<String, Departs> villesDep = new HashMap<String, Departs>();
+        HashMap<String, Depart> villesDep = new HashMap<String, Depart>();
 
         try {
             Scanner sc = new Scanner(f);
             while(sc.hasNextLine()) {
                 ficLines.add(sc.nextLine());
             }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
 
         for (int i = 0 ; i<ficLines.size() ; i++) {
