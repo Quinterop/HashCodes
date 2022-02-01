@@ -44,4 +44,9 @@ public class Parsing {
             }
         }
     }
+
+    public static String[] split_on_char(String line) {
+        return line.split(" ");
+    }
+
 }
