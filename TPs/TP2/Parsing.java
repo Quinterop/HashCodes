@@ -49,4 +49,9 @@ public class Parsing {
             System.out.println(ficLines);
         }
     }
+
+    public static String[] split_on_char(String line) {
+        return line.split(" ");
+    }
+
 }
