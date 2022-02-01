@@ -10,6 +10,10 @@ public class Parsing {
     
     public static void main(String[] args) {
         
+        if (args.length < 1) {
+            System.out.println("Préciser le chemin du fichier...");
+            System.exit(1);
+        }
         File f = new File(args[1]);
         
         /*
@@ -42,6 +46,7 @@ public class Parsing {
             if (i == 3) {
                 busC = Integer.valueOf(ficLines.get(i));
             }
+            System.out.println(ficLines);
         }
     }
 }
