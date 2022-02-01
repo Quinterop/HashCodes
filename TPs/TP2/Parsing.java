@@ -41,7 +41,8 @@ public class Parsing {
         HashMap<String, Depart> villesDep = new HashMap<String, Depart>();
         HashMap<String,Integer> identifiants = new HashMap<String,Integer>();
         
-        int[][] adja = new int[nbVilles][nbVilles];
+        //moche mais devrait marcher
+        int[][] adja = new int[0][0];
 
 
 
@@ -64,6 +65,7 @@ public class Parsing {
             // quatres premières lignes (de type int)
             if (i == 0) {
                 nbVilles = Integer.valueOf(lineSplited[0]);
+                adja = new int[nbVilles][nbVilles];
             }
             else if (i == 1) {
                 busA = Integer.valueOf(lineSplited[0]);
@@ -83,9 +85,6 @@ public class Parsing {
             	
             		
             		}
-            	
-            
-            
 
             else {
                 // ajout des villes de départs de leurs caractéristiques dans la HashMap et la map des id
