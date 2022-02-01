@@ -79,7 +79,7 @@ public class Parsing {
                 // Pour la matrice d'adjacence
             	int x = identifiants.get(lineSplited[0]);
                 int y = identifiants.get(lineSplited[1]);
-                adja[x][y] = Integer.valueOf(lineSplited[3]);
+                adja[x][y] = Integer.valueOf(lineSplited[2]);
             	
             		
             		}
@@ -92,6 +92,7 @@ public class Parsing {
                 villesDep.put(lineSplited[0], new Depart(Integer.valueOf(lineSplited[1]), Integer.valueOf(lineSplited[2]), Integer.valueOf(lineSplited[3])));
                 identifiants.put(lineSplited[0],id);
                 id++;
+                if (id>nbVilles) System.out.println("c pété");
             }
         }
     }
