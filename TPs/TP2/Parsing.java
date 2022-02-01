@@ -34,9 +34,14 @@ public class Parsing {
 
         // tableau pour stocker chaque mot de la ligne courante
         String[] lineSplited;
+        
+        int id = 0;
 
         // Liste des villes de départs (clé String) associées à un objet (Depart) comportant le crédit pour les bus de types A, B, C
         HashMap<String, Depart> villesDep = new HashMap<String, Depart>();
+        HashMap<String,Integer> identifiants = new HashMap<String,Integer>();
+        
+        int[][] adja = new int[nbVilles][nbVilles];
 
 
 
@@ -71,13 +76,22 @@ public class Parsing {
             }
 
             else if (i >= nbVilles+4) {
-                // Pour la matrice d'adjacense
-            }
+                // Pour la matrice d'adjacence
+            	int x = identifiants.get(lineSplited[0]);
+                int y = identifiants.get(lineSplited[1]);
+                adja[x][y] = Integer.valueOf(lineSplited[3]);
+            	
+            		
+            		}
+            	
+            
+            
 
             else {
-                // ajout des villes de départs de leurs caractéristiques dans la HashMap
+                // ajout des villes de départs de leurs caractéristiques dans la HashMap et la map des id
                 villesDep.put(lineSplited[0], new Depart(Integer.valueOf(lineSplited[1]), Integer.valueOf(lineSplited[2]), Integer.valueOf(lineSplited[3])));
-                nbVilles--;
+                identifiants.put(lineSplited[0],id);
+                id++;
             }
         }
     }
