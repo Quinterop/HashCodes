@@ -59,29 +59,26 @@ public class Parsing {
             // quatres premières lignes (de type int)
             if (i == 0) {
                 nbVilles = Integer.valueOf(lineSplited[0]);
-                continue;
             }
-            if (i == 1) {
+            else if (i == 1) {
                 busA = Integer.valueOf(lineSplited[0]);
-                continue;
             }
-            if (i == 2) {
+            else if (i == 2) {
                 busB = Integer.valueOf(lineSplited[0]);
-                continue;
             }
-            if (i == 3) {
+            else if (i == 3) {
                 busC = Integer.valueOf(lineSplited[0]);
-                continue;
             }
 
-            // Pour la matrice d'adjacense
-            if (nbVilles == 0) {
-                continue;
+            else if (i >= nbVilles+4) {
+                // Pour la matrice d'adjacense
             }
 
-            // ajout des villes de départs de leurs caractéristiques dans la HashMap
-            villesDep.put(lineSplited[0], new Depart(Integer.valueOf(lineSplited[1]), Integer.valueOf(lineSplited[2]), Integer.valueOf(lineSplited[3])));
-            nbVilles--;
+            else {
+                // ajout des villes de départs de leurs caractéristiques dans la HashMap
+                villesDep.put(lineSplited[0], new Depart(Integer.valueOf(lineSplited[1]), Integer.valueOf(lineSplited[2]), Integer.valueOf(lineSplited[3])));
+                nbVilles--;
+            }
         }
     }
 
