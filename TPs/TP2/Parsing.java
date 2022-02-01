@@ -21,7 +21,7 @@ public class Parsing {
          */
 
         // ouverture du fichier passé en argument
-        File f = new File(args[1]);
+        File f = new File(args[0]);
         
         // nombre de bus pour chaque type
         int busA, busB, busC = 0;
