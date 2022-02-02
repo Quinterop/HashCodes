@@ -93,6 +93,7 @@ public class Parsing {
                 id++;
                 if (id>nbVilles) System.out.println("c pété");
             }
+            // DEBBUG : System.out.println(ficLines.get(i));
         }
     }
 
