@@ -1,5 +1,3 @@
-package TPs.TP2;
-
 public class Depart {
     private final int a,b,c;
 

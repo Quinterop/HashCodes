@@ -1,5 +1,3 @@
-package TPs.TP2;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -34,7 +32,7 @@ public class Main {
     private static HashMap<String,Integer> identifiants = new HashMap<String,Integer>();
     
     //moche mais devrait marcher
-    private static int[][] adja = new int[0][0];
+    private static int[][] adjaMatrix = new int[0][0];
 
 
     // ############
@@ -135,7 +133,7 @@ public class Main {
             // quatres premières lignes (de type int)
             if (i == 0) {
                 nbVilles = Integer.valueOf(lineSplited[0]);
-                adja = new int[nbVilles][nbVilles];
+                adjaMatrix = new int[nbVilles][nbVilles];
             }
             else if (i == 1) {
                 busA = Integer.valueOf(lineSplited[0]);
@@ -151,7 +149,7 @@ public class Main {
                 // Pour la matrice d'adjacence
             	int x = identifiants.get(lineSplited[0]);
                 int y = identifiants.get(lineSplited[1]);
-                adja[x][y] = Integer.valueOf(lineSplited[2]);           	
+                adjaMatrix[x][y] = Integer.valueOf(lineSplited[2]);           	
             }
 
             else {
