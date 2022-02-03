@@ -46,8 +46,12 @@ public class Main {
 
     public static void bestDepart(){
 
-        int[] bestA, bestB, bestC = new int[3];
-        String[] nameA, nameB, nameC = new String[3];
+        int[] bestA = new int[3];
+        int[] bestB = new int[3];
+        int[] bestC = new int[3];
+        String[] nameA = {"","",""};
+        String[] nameB = {"","",""};
+        String[] nameC = {"","",""};
 
         for (Entry<String, Depart> entry : villesDep.entrySet()) {
             for(int i=0; i<3 ; i++){
@@ -203,6 +207,7 @@ public class Main {
             System.exit(1);
         }
         parsing(args[0]);
+        bestDepart();
     }
 
 }
