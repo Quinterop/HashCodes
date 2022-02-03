@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Map.Entry;
 
 public class Main {
 
@@ -32,6 +33,71 @@ public class Main {
     //moche mais devrait marcher
     private static int[][] adja = new int[0][0];
 
+
+    // ############
+
+    /*
+     * START OF
+     * CHEMIN NAIF
+     */
+
+    public static void bestDepart(){
+
+        int[] bestA, bestB, bestC = new int[3];
+        String[] nameA, nameB, nameC = new String[3];
+
+        for (Entry<String, Depart> entry : villesDep.entrySet()) {
+            for(int i=0; i<3 ; i++){
+                if(entry.getValue().getA()>bestA[i]){ 
+                    bestA[i] = entry.getValue().getA(); 
+                    nameA[i]=entry.getKey();
+                }
+                if(entry.getValue().getB()>bestB[i]){ 
+                    bestB[i] = entry.getValue().getB(); 
+                    nameB[i]=entry.getKey();
+                }
+                if(entry.getValue().getC()>bestC[i]){ 
+                    bestC[i] = entry.getValue().getC(); 
+                    nameC[i]=entry.getKey();
+                }
+            }
+
+        }
+        for(String i:nameA)
+            System.out.println(i);
+        
+    }
+
+    /*
+    public void shortest(int[][] tab){
+        int[] bests = new int[5]; //taille customisable ? en fonction de tab ?
+
+
+        for(int i=0; i<tab.length; i++){
+            for(int j=0; j<tab[i].length; j++){
+
+                for(int k=0;k<bests.length ; k++){ //triple boucle c nul mdr
+
+                if(tab[i][j]>bests[k])
+                    bests[k] = tab[i][j];
+                    
+                }
+            }
+        }
+    }
+    */
+
+    /*
+     * END OF
+     * CHEMIN NAIF
+     */
+
+    // ##################
+
+    /*
+     * START OF
+     * PARSING
+     */
 
     // Pour convertir la chaine de caractère en tableau
     public static String[] split_on_char(String line) {
@@ -91,6 +157,11 @@ public class Main {
             /* DEBBUG : System.out.println(ficLines.get(i));*/
         }
     }
+
+    /*
+     * END OF
+     * PARSING
+     */
 
     public static void main(String[] args) {
         // vérification qu'un argument (chemin) a bien été passé
