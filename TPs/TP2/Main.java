@@ -19,21 +19,21 @@ public class Main {
     // nombre de villes sur la ligne
     private static int nbVilles = 0;
 
-    // Liste de toutes les lignes du 
+    // Liste de toutes les lignes du
     private static ArrayList<String> ficLines = new ArrayList<String>();
 
     // tableau pour stocker chaque mot de la ligne courante
     private static String[] lineSplited;
-    
+
     private static int id = 0;
 
-    // Liste des villes de départs (clé String) associées à un objet (Depart) comportant le crédit pour les bus de types A, B, C
+    // Liste des villes de départs (clé String) associées à un objet (Depart)
+    // comportant le crédit pour les bus de types A, B, C
     private static HashMap<String, Depart> villesDep = new HashMap<String, Depart>();
-    private static HashMap<String,Integer> identifiants = new HashMap<String,Integer>();
-    
-    //moche mais devrait marcher
-    private static int[][] adjaMatrix = new int[0][0];
+    private static HashMap<String, Integer> identifiants = new HashMap<String, Integer>();
 
+    // moche mais devrait marcher
+    private static int[][] adjaMatrix = new int[0][0];
 
     // ############
 
@@ -42,55 +42,74 @@ public class Main {
      * CHEMIN NAIF
      */
 
-    public static void bestDepart(){
+    public static String[][] bestDepart() {
 
-        int[] bestA = new int[3];
-        int[] bestB = new int[3];
-        int[] bestC = new int[3];
-        String[] nameA = {"","",""};
-        String[] nameB = {"","",""};
-        String[] nameC = {"","",""};
+        int[] bestA = new int[busA];
+        int[] bestB = new int[busB];
+        int[] bestC = new int[busC];
+        String[] nameA = { "", "", "" };
+        String[] nameB = { "", "", "" };
+        String[] nameC = { "", "", "" };
 
-        for (Entry<String, Depart> entry : villesDep.entrySet()) {
-            for(int i=0; i<3 ; i++){
-                if(entry.getValue().getA()>bestA[i]){ 
-                    bestA[i] = entry.getValue().getA(); 
-                    nameA[i]=entry.getKey();
-                }
-                if(entry.getValue().getB()>bestB[i]){ 
-                    bestB[i] = entry.getValue().getB(); 
-                    nameB[i]=entry.getKey();
-                }
-                if(entry.getValue().getC()>bestC[i]){ 
-                    bestC[i] = entry.getValue().getC(); 
-                    nameC[i]=entry.getKey();
+        for (HashMap.Entry<String, Depart> entry : villesDep.entrySet()) {
+            for (int i = 0; i < busA; i++) {
+                if (entry.getValue().getA() > bestA[i]) {
+                    bestA[i] = entry.getValue().getA();
+                    nameA[i] = entry.getKey();
+                    break;
                 }
             }
-
         }
-        for(String i:nameA)
+        for (HashMap.Entry<String, Depart> entry : villesDep.entrySet()) {
+            for (int i = 0; i < busB; i++) {
+                if (entry.getValue().getB() > bestB[i]) {
+                    bestB[i] = entry.getValue().getB();
+                    nameB[i] = entry.getKey();
+                    break;
+                }
+            }
+        }
+        for (HashMap.Entry<String, Depart> entry : villesDep.entrySet()) {
+            for (int i = 0; i < busC; i++) {
+                if (entry.getValue().getC() > bestC[i]) {
+                    bestC[i] = entry.getValue().getC();
+                    nameC[i] = entry.getKey();
+                    break;
+                }
+
+            }
+        }
+        System.out.println("for a:");
+        for (String i : nameA)
             System.out.println(i);
-        
+        System.out.println("for b:");
+        for (String i : nameB)
+            System.out.println(i);
+        System.out.println("for c:");
+        for (String i : nameC)
+            System.out.println(i);
+
+        return new String[][] { nameA, nameB, nameC };
     }
 
     /*
-    public void shortest(int[][] tab){
-        int[] bests = new int[5]; //taille customisable ? en fonction de tab ?
-
-
-        for(int i=0; i<tab.length; i++){
-            for(int j=0; j<tab[i].length; j++){
-
-                for(int k=0;k<bests.length ; k++){ //triple boucle c nul mdr
-
-                if(tab[i][j]>bests[k])
-                    bests[k] = tab[i][j];
-                    
-                }
-            }
-        }
-    }
-    */
+     * public void shortest(int[][] tab){
+     * int[] bests = new int[5]; //taille customisable ? en fonction de tab ?
+     * 
+     * 
+     * for(int i=0; i<tab.length; i++){
+     * for(int j=0; j<tab[i].length; j++){
+     * 
+     * for(int k=0;k<bests.length ; k++){ //triple boucle c nul mdr
+     * 
+     * if(tab[i][j]>bests[k])
+     * bests[k] = tab[i][j];
+     * 
+     * }
+     * }
+     * }
+     * }
+     */
 
     /*
      * END OF
@@ -116,7 +135,7 @@ public class Main {
         // lecture du fichier et ajout de chaque ligne dans l'ArrayList de type String
         try {
             try (Scanner sc = new Scanner(f)) {
-                while(sc.hasNextLine()) {
+                while (sc.hasNextLine()) {
                     ficLines.add(sc.nextLine());
                 }
             }
@@ -125,42 +144,44 @@ public class Main {
         }
 
         // parcours de la liste de lignes
-        for (int i = 0 ; i<ficLines.size() ; i++) {
+        for (int i = 0; i < ficLines.size(); i++) {
 
-            // conversion de la ligne courante en un tableau contenant chaque mot de la ligne
+            // conversion de la ligne courante en un tableau contenant chaque mot de la
+            // ligne
             lineSplited = split_on_char(ficLines.get(i));
 
             // quatres premières lignes (de type int)
             if (i == 0) {
                 nbVilles = Integer.valueOf(lineSplited[0]);
                 adjaMatrix = new int[nbVilles][nbVilles];
-            }
-            else if (i == 1) {
+            } else if (i == 1) {
                 busA = Integer.valueOf(lineSplited[0]);
-            }
-            else if (i == 2) {
+            } else if (i == 2) {
                 busB = Integer.valueOf(lineSplited[0]);
-            }
-            else if (i == 3) {
+            } else if (i == 3) {
                 busC = Integer.valueOf(lineSplited[0]);
             }
 
-            else if (i >= nbVilles+4) {
+            else if (i >= nbVilles + 4) {
                 // Pour la matrice d'adjacence
-            	int x = identifiants.get(lineSplited[0]);
+                int x = identifiants.get(lineSplited[0]);
                 int y = identifiants.get(lineSplited[1]);
-                adjaMatrix[x][y] = Integer.valueOf(lineSplited[2]);           	
+                adjaMatrix[x][y] = Integer.valueOf(lineSplited[2]);
             }
 
             else {
-                // ajout des villes de départs de leurs caractéristiques dans la HashMap et la map des id
-                villesDep.put(lineSplited[0], new Depart(Integer.valueOf(lineSplited[1]), Integer.valueOf(lineSplited[2]), Integer.valueOf(lineSplited[3])));
-                identifiants.put(lineSplited[0],id);
+                // ajout des villes de départs de leurs caractéristiques dans la HashMap et la
+                // map des id
+                villesDep.put(lineSplited[0], new Depart(Integer.valueOf(lineSplited[1]),
+                        Integer.valueOf(lineSplited[2]), Integer.valueOf(lineSplited[3])));
+                identifiants.put(lineSplited[0], id);
                 id++;
-                if (id>nbVilles) System.out.println("c pété");
+                if (id > nbVilles)
+                    System.out.println("c pété");
             }
-            /* DEBBUG : System.out.println(ficLines.get(i));*/
+            // System.out.println(ficLines.get(i));
         }
+        // System.out.println(busA + " " + busB + " " + busC);
     }
 
     /*
@@ -168,27 +189,24 @@ public class Main {
      * PARSING
      */
 
-
     /*
      * START OF
      * WRITE OUTPUT
      */
-    
-    private static void writeOutput(){
-        try{
-            File outputfile=new File("test.out");
+
+    private static void writeOutput() {
+        try {
+            File outputfile = new File("test.out");
             outputfile.createNewFile();
-        
-            
+
             FileWriter fw = new FileWriter(outputfile.getAbsoluteFile());
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write("###");
             bw.close();
-            
+
             System.out.println("Modification terminée!");
-         
-        } 
-        catch (IOException e) {
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

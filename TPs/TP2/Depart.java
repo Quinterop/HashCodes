@@ -1,10 +1,10 @@
 public class Depart {
-    private final int a,b,c;
+    private final int a, b, c;
 
-    public Depart(int a, int b , int c){
-        this.a=a;
-        this.b=c;
-        this.c=c;
+    public Depart(int a, int b, int c) {
+        this.a = a;
+        this.b = b;
+        this.c = c;
     }
 
     public int getA() {
