@@ -1,7 +1,10 @@
 package TPs.TP2;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -161,6 +164,36 @@ public class Main {
     /*
      * END OF
      * PARSING
+     */
+
+
+    /*
+     * START OF
+     * WRITE OUTPUT
+     */
+    
+    private static void writeOutput(){
+        try{
+            File outputfile=new File("test.out");
+            outputfile.createNewFile();
+        
+            
+            FileWriter fw = new FileWriter(outputfile.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write("###");
+            bw.close();
+            
+            System.out.println("Modification terminée!");
+         
+        } 
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
+     * END OF
+     * WRITE OUTPUT
      */
 
     public static void main(String[] args) {
