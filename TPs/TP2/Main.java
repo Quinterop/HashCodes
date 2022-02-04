@@ -95,9 +95,7 @@ public class Main {
 		return new String[][] { nameA, nameB, nameC };
 	}
 
-	public static void shortest(int villeID) {
-		// donne le plus court chemin pour le premier bus (A)
-		String[][] dprt = bestDepart();
+	public static String shortest(int villeID) {
 		// pour A:
 		// id2 = arrivé id1= depart
 		int id2 = 10000000;
@@ -115,10 +113,16 @@ public class Main {
 				break;
 			}
 			if (entry.getValue() == id2) {
-				System.out.println(entry.getKey());
+				return entry.getKey();
 			}
 		}
+        return null;
 	}
+
+    public static void path() {
+        String[][] starts = bestDepart();
+        //Call shortest repeatedly while there is credit left for the bus        
+    }
 
 	/*
 	 * END OF
@@ -242,7 +246,7 @@ public class Main {
 			System.exit(1);
 		}
 		parsing(args[0]);
-		shortest(0);
+        System.out.println(shortest(0));
 	}
 
     public static void printMatrix() {
