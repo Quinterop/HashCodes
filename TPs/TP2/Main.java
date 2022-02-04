@@ -80,7 +80,7 @@ public class Main {
 
 			}
 		}
-		System.out.println("Best starts");
+		/* System.out.println("Best starts");
 		System.out.println("for a:");
 		for (String i : nameA)
 			System.out.println("\t" + i);
@@ -90,7 +90,7 @@ public class Main {
 		System.out.println("for c:");
 		for (String i : nameC)
 			System.out.println("\t" + i);
-		System.out.println("");
+		System.out.println(""); */
 
 		return new String[][] { nameA, nameB, nameC };
 	}
@@ -107,9 +107,9 @@ public class Main {
 				poids = adjaMatrix[villeID][j];
 			}
 		}
+		
 		for (HashMap.Entry<String, Integer> entry : identifiants.entrySet()) {
 			if (id2 == 10000000) {
-				System.out.println(id2);
 				break;
 			}
 			if (entry.getValue() == id2) {
@@ -119,7 +119,7 @@ public class Main {
 		return null;
 	}
 
-	public static ArrayList[] path() {
+	public static ArrayList<String>[] path() {
 		String[][] starts = bestDepart();
 		// Call shortest repeatedly while there is credit left for the bus
 		ArrayList[] rtrn = new ArrayList[3];
@@ -234,7 +234,7 @@ public class Main {
 	 * WRITE OUTPUT
 	 */
 
-	private static void writeOutput(String[][] res) {
+	private static void writeOutput(ArrayList<String>[] res) {
 		try {
 			System.out.println("Début écriture résultat");
 			File outputfile = new File("res.out");
@@ -247,9 +247,9 @@ public class Main {
 					"R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
 
 			for (int i = 0; i < res.length; i++) {
-				bw.write("###\n" + alphabet[i]);
-				for (int j = 0; j < res[i].length; j++) {
-					bw.write(res[i][j]);
+				bw.write("###\n" + alphabet[i] + "\n");
+				for (int j = 0; j < res[i].size(); j++) {
+					bw.write(res[i].get(j) + "\n");
 				}
 			}
 
@@ -273,7 +273,7 @@ public class Main {
 			System.exit(1);
 		}
 		parsing(args[0]);
-		System.out.println(shortest(0));
+		writeOutput(path());
 	}
 
 	public static void printMatrix() {
