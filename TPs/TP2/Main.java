@@ -203,17 +203,26 @@ public class Main {
 	 * WRITE OUTPUT
 	 */
 
-	private static void writeOutput() {
+	private static void writeOutput(String[][] res) {
 		try {
-			File outputfile = new File("test.out");
+			System.out.println("Début écriture résultat");
+			File outputfile = new File("res.out");
 			outputfile.createNewFile();
 
 			FileWriter fw = new FileWriter(outputfile.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
-			bw.write("###");
-			bw.close();
 
-			System.out.println("Modification terminée!");
+			String[] alphabet = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+
+			for (int i = 0 ; i < res.length ; i++) {
+				bw.write("###\n" + alphabet[i]);
+				for (int j = 0 ; j < res[i].length ; j++) {
+					bw.write(res[i][j]);
+				}
+			}
+			
+			bw.close();
+			System.out.println("Fin écriture résultat");
 
 		} catch (IOException e) {
 			e.printStackTrace();
