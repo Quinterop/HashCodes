@@ -95,19 +95,16 @@ public class Main {
 		return new String[][] { nameA, nameB, nameC };
 	}
 
-	public static void shortest() {
-		// donne le plus court chemin pour le premier bus (A)
-		String[][] dprt = bestDepart();
+	public static String shortest(int villeID) {
 		// pour A:
 		// id2 = arrivé id1= depart
 		int id2 = 10000000;
-		int id1 = identifiants.get(dprt[0][0]);
 		// poids = cout entre id1 et id2
 		int poids = 1000000;
 		for (int j = 0; j < nbVilles; j++) {
-			if (adjaMatrix[id1][j] < poids && adjaMatrix[id1][j] != 0) {
+			if (adjaMatrix[villeID][j] < poids && adjaMatrix[villeID][j] != 0) {
 				id2 = j;
-				poids = adjaMatrix[id1][j];
+				poids = adjaMatrix[villeID][j];
 			}
 		}
 		for (HashMap.Entry<String, Integer> entry : identifiants.entrySet()) {
@@ -116,10 +113,16 @@ public class Main {
 				break;
 			}
 			if (entry.getValue() == id2) {
-				System.out.println(entry.getKey());
+				return entry.getKey();
 			}
 		}
+        return null;
 	}
+
+    public static void path() {
+        String[][] starts = bestDepart();
+        //Call shortest repeatedly while there is credit left for the bus        
+    }
 
 	/*
 	 * END OF
@@ -243,7 +246,7 @@ public class Main {
 			System.exit(1);
 		}
 		parsing(args[0]);
-		shortest();
+        System.out.println(shortest(0));
 	}
 
     public static void printMatrix() {
