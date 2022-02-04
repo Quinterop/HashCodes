@@ -9,6 +9,7 @@
 
 **Ismael :**
 
+* Participé à l'implémentation de l'algorithme de parcours
 * écriture de la sortie (résultat de l'algorithme) dans un fichier (.out)
 
 **Hugo :**
