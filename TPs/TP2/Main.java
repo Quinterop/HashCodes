@@ -80,17 +80,17 @@ public class Main {
 
 			}
 		}
-        System.out.println("Best starts");
+		System.out.println("Best starts");
 		System.out.println("for a:");
 		for (String i : nameA)
-			System.out.println("\t"+i);
+			System.out.println("\t" + i);
 		System.out.println("for b:");
 		for (String i : nameB)
-			System.out.println("\t"+i);
+			System.out.println("\t" + i);
 		System.out.println("for c:");
 		for (String i : nameC)
-			System.out.println("\t"+i);
-        System.out.println("");
+			System.out.println("\t" + i);
+		System.out.println("");
 
 		return new String[][] { nameA, nameB, nameC };
 	}
@@ -116,13 +116,39 @@ public class Main {
 				return entry.getKey();
 			}
 		}
-        return null;
+		return null;
 	}
 
-    public static void path() {
-        String[][] starts = bestDepart();
-        //Call shortest repeatedly while there is credit left for the bus        
-    }
+	public static ArrayList[] path() {
+		String[][] starts = bestDepart();
+		// Call shortest repeatedly while there is credit left for the bus
+		ArrayList[] rtrn = new ArrayList[3];
+		int id = 100000;
+		ArrayList<String> rtrnA = new ArrayList<String>();
+		ArrayList<String> rtrnB = new ArrayList<String>();
+		ArrayList<String> rtrnC = new ArrayList<String>();
+
+		// pour A
+		for (int j = 0; j < starts[0].length; j++) {
+			id = identifiants.get(starts[0][j]);
+			rtrnA.add(shortest(id));
+		}
+		rtrn[0] = rtrnA;
+		// pour B
+		for (int j = 0; j < starts[1].length; j++) {
+			id = identifiants.get(starts[1][j]);
+			rtrnB.add(shortest(id));
+		}
+		rtrn[1] = rtrnB;
+		// pour C
+		for (int j = 0; j < starts[2].length; j++) {
+			id = identifiants.get(starts[2][j]);
+			rtrnC.add(shortest(id));
+		}
+		rtrn[2] = rtrnC;
+
+		return rtrn;
+	}
 
 	/*
 	 * END OF
@@ -195,7 +221,7 @@ public class Main {
 			}
 			// System.out.println(ficLines.get(i));
 		}
-		 //System.out.println(busA + " " + busB + " " + busC);
+		// System.out.println(busA + " " + busB + " " + busC);
 	}
 
 	/*
@@ -217,15 +243,16 @@ public class Main {
 			FileWriter fw = new FileWriter(outputfile.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
 
-			String[] alphabet = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+			String[] alphabet = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q",
+					"R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
 
-			for (int i = 0 ; i < res.length ; i++) {
+			for (int i = 0; i < res.length; i++) {
 				bw.write("###\n" + alphabet[i]);
-				for (int j = 0 ; j < res[i].length ; j++) {
+				for (int j = 0; j < res[i].length; j++) {
 					bw.write(res[i][j]);
 				}
 			}
-			
+
 			bw.close();
 			System.out.println("Fin écriture résultat");
 
@@ -246,16 +273,16 @@ public class Main {
 			System.exit(1);
 		}
 		parsing(args[0]);
-        System.out.println(shortest(0));
+		System.out.println(shortest(0));
 	}
 
-    public static void printMatrix() {
-        for (int i = 0; i < adjaMatrix.length; i++) {
-            for (int j = 0; j < adjaMatrix[i].length; j++) {
-                System.out.print(adjaMatrix[i][j] + "\t");
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
+	public static void printMatrix() {
+		for (int i = 0; i < adjaMatrix.length; i++) {
+			for (int j = 0; j < adjaMatrix[i].length; j++) {
+				System.out.print(adjaMatrix[i][j] + "\t");
+			}
+			System.out.println();
+		}
+		System.out.println();
+	}
 }
