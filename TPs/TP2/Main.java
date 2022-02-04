@@ -48,9 +48,9 @@ public class Main {
 		int[] bestA = new int[busA];
 		int[] bestB = new int[busB];
 		int[] bestC = new int[busC];
-		String[] nameA = { "", "", "" };
-		String[] nameB = { "", "", "" };
-		String[] nameC = { "", "", "" };
+		String[] nameA = new String[busA];
+		String[] nameB = new String[busB];
+		String[] nameC = new String[busC];
 
 		for (HashMap.Entry<String, Depart> entry : villesDep.entrySet()) {
 			for (int i = 0; i < busA; i++) {
@@ -80,15 +80,17 @@ public class Main {
 
 			}
 		}
+        System.out.println("Best starts");
 		System.out.println("for a:");
 		for (String i : nameA)
-			System.out.println(i);
+			System.out.println("\t"+i);
 		System.out.println("for b:");
 		for (String i : nameB)
-			System.out.println(i);
+			System.out.println("\t"+i);
 		System.out.println("for c:");
 		for (String i : nameC)
-			System.out.println(i);
+			System.out.println("\t"+i);
+        System.out.println("");
 
 		return new String[][] { nameA, nameB, nameC };
 	}
@@ -190,7 +192,7 @@ public class Main {
 			}
 			// System.out.println(ficLines.get(i));
 		}
-		// System.out.println(busA + " " + busB + " " + busC);
+		 //System.out.println(busA + " " + busB + " " + busC);
 	}
 
 	/*
@@ -233,13 +235,15 @@ public class Main {
 		}
 		parsing(args[0]);
 		shortest();
-
-		for (int i = 0; i < adjaMatrix.length; i++) {
-			System.out.println();
-			for (int j = 0; j < adjaMatrix[i].length; j++) {
-				System.out.print(adjaMatrix[i][j] + " ");
-			}
-		}
 	}
 
+    public static void printMatrix() {
+        for (int i = 0; i < adjaMatrix.length; i++) {
+            for (int j = 0; j < adjaMatrix[i].length; j++) {
+                System.out.print(adjaMatrix[i][j] + "\t");
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
 }
