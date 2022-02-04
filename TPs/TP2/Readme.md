@@ -15,4 +15,6 @@
 
 **Rayane :**
 
+**Alassane :**
+
 Remarque : *La répartition du travail ci-dessus prend en compte ce que chaque membre du groupe a précisemment modifié dans le répertoire tp2. Nous avons tous travaillés en coopération et échangé activement sur les différents aspects du tp.*
