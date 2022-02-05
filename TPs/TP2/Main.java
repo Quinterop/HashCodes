@@ -4,10 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.util.Map.Entry;
 
 public class Main {
 
@@ -80,74 +78,62 @@ public class Main {
 
 			}
 		}
-		/* System.out.println("Best starts");
-		System.out.println("for a:");
-		for (String i : nameA)
-			System.out.println("\t" + i);
-		System.out.println("for b:");
-		for (String i : nameB)
-			System.out.println("\t" + i);
-		System.out.println("for c:");
-		for (String i : nameC)
-			System.out.println("\t" + i);
-		System.out.println(""); */
 
 		return new String[][] { nameA, nameB, nameC };
 	}
 
 	public static String shortest(int villeID) {
 		// pour A:
-		// id2 = arrivé id1= depart
-		int id2 = 10000000;
-		// poids = cout entre id1 et id2
+		int inflowID = 10000000;
+		// poids : entre id courrant et d'arrivé
 		int poids = 1000000;
 		for (int j = 0; j < nbVilles; j++) {
 			if (adjaMatrix[villeID][j] < poids && adjaMatrix[villeID][j] != 0) {
-				id2 = j;
+				inflowID = j;
 				poids = adjaMatrix[villeID][j];
 			}
 		}
 		
 		for (HashMap.Entry<String, Integer> entry : identifiants.entrySet()) {
-			if (id2 == 10000000) {
+			if (inflowID == 10000000) {
 				break;
 			}
-			if (entry.getValue() == id2) {
+			if (entry.getValue() == inflowID) {
 				return entry.getKey();
 			}
 		}
 		return null;
 	}
 
-	public static ArrayList<String>[] path() {
+	public static ArrayList<ArrayList<String>> path() {
 		String[][] starts = bestDepart();
 		// Call shortest repeatedly while there is credit left for the bus
-		ArrayList[] rtrn = new ArrayList[3];
+		ArrayList<ArrayList<String>> path = new ArrayList<ArrayList<String>>();
 		int id = 100000;
-		ArrayList<String> rtrnA = new ArrayList<String>();
-		ArrayList<String> rtrnB = new ArrayList<String>();
-		ArrayList<String> rtrnC = new ArrayList<String>();
+		ArrayList<String> pathA = new ArrayList<String>();
+		ArrayList<String> pathB = new ArrayList<String>();
+		ArrayList<String> pathC = new ArrayList<String>();
 
 		// pour A
 		for (int j = 0; j < starts[0].length; j++) {
 			id = identifiants.get(starts[0][j]);
-			rtrnA.add(shortest(id));
+			pathA.add(shortest(id));
 		}
-		rtrn[0] = rtrnA;
+		path.add(pathA);
 		// pour B
 		for (int j = 0; j < starts[1].length; j++) {
 			id = identifiants.get(starts[1][j]);
-			rtrnB.add(shortest(id));
+			pathB.add(shortest(id));
 		}
-		rtrn[1] = rtrnB;
+		path.add(pathB);
 		// pour C
 		for (int j = 0; j < starts[2].length; j++) {
 			id = identifiants.get(starts[2][j]);
-			rtrnC.add(shortest(id));
+			pathC.add(shortest(id));
 		}
-		rtrn[2] = rtrnC;
+		path.add(pathC);
 
-		return rtrn;
+		return path;
 	}
 
 	/*
@@ -210,18 +196,15 @@ public class Main {
 			}
 
 			else {
-				// ajout des villes de départs de leurs caractéristiques dans la HashMap et la
-				// map des id
+				// ajout des villes de départs et de leurs caractéristiques dans la HashMap
 				villesDep.put(lineSplited[0], new Depart(Integer.valueOf(lineSplited[1]),
 						Integer.valueOf(lineSplited[2]), Integer.valueOf(lineSplited[3])));
 				identifiants.put(lineSplited[0], id);
 				id++;
 				if (id > nbVilles)
-					System.out.println("c pété");
+					System.out.println("err id");
 			}
-			// System.out.println(ficLines.get(i));
 		}
-		// System.out.println(busA + " " + busB + " " + busC);
 	}
 
 	/*
@@ -234,7 +217,7 @@ public class Main {
 	 * WRITE OUTPUT
 	 */
 
-	private static void writeOutput(ArrayList<String>[] res) {
+	private static void writeOutput(ArrayList<ArrayList<String>> res) {
 		try {
 			System.out.println("Début écriture résultat");
 			File outputfile = new File("res.out");
@@ -246,10 +229,10 @@ public class Main {
 			String[] alphabet = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q",
 					"R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
 
-			for (int i = 0; i < res.length; i++) {
+			for (int i = 0; i < res.size(); i++) {
 				bw.write("###\n" + alphabet[i] + "\n");
-				for (int j = 0; j < res[i].size(); j++) {
-					bw.write(res[i].get(j) + "\n");
+				for (int j = 0; j < res.get(i).size(); j++) {
+					bw.write(res.get(i).get(j) + "\n");
 				}
 			}
 
