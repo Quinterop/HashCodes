@@ -1,3 +1,3 @@
 # peff22-4
 
-## [TP2](Tps/TP2)
+## [TP2](TPs/TP2)
