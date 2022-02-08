@@ -66,9 +66,9 @@ public class Main{
 
     public static int biggestWord(){
         int len = 0;
-        for(int i = 0; i<mots.length; i++){
-            if(String.length(mots[i])>len)
-            len = String.length(mots[i]);
+        for(int i = 0; i<mots.size(); i++){
+            if(mots.get(i).length()>len)
+            len = mots.get(i).length();
         }
         return len;
     }
@@ -76,22 +76,22 @@ public class Main{
     public static void brute() {
         int winIndex = Integer.MAX_VALUE;
         int winLength = Integer.MAX_VALUE;
-        int winString;
+        String winString;
         
         
         int searchSize = biggestWord();
-        for(int j = 0; j<mots.length ; j++){ //pour tous mots
+        for(int j = 0; j<mots.size() ; j++){ //pour tous mots
             
             
-            int[] occurences = allOccurences(alphabet,mots[j]); //pour toutes occurences
+            int[] occurences = allOccurences(chaineChar,mots.get(j)); //pour toutes occurences
             for(int i = 0; i < occurences.length ; i++){
                 
                 int debut = occurences[i];
-                String searchString = alphabet.substring(debut, debut+searchSize); //chercher si le string de taille x contient les mots
+                String searchString = chaineChar.substring(debut, debut+searchSize); //chercher si le string de taille x contient les mots
                 
                 boolean found = true;
-                for(int k = 0; k<mots.length ; k++){
-                    if(!searchString.contains(mots[k])){ 
+                for(int k = 0; k<mots.size() ; k++){
+                    if(!searchString.contains(mots.get(k))){ 
                         found = false;
                     }
                 }
