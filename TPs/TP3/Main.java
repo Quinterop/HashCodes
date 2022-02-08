@@ -76,35 +76,45 @@ public class Main{
     public static void brute() {
         int winIndex = Integer.MAX_VALUE;
         int winLength = Integer.MAX_VALUE;
-        String winString;
-        
+        String winString = "";
         
         int searchSize = biggestWord();
-        for(int j = 0; j<mots.size() ; j++){ //pour tous mots
-            
-            
-            int[] occurences = allOccurences(chaineChar,mots.get(j)); //pour toutes occurences
-            for(int i = 0; i < occurences.length ; i++){
+        
+        for(int incr = 0 ; incr<chaineChar.length() ; incr++) {
+            for(int j = 0; j<mots.size() ; j++){ //pour tous mots
                 
-                int debut = occurences[i];
-                String searchString = chaineChar.substring(debut, debut+searchSize); //chercher si le string de taille x contient les mots
                 
-                boolean found = true;
-                for(int k = 0; k<mots.size() ; k++){
-                    if(!searchString.contains(mots.get(k))){ 
-                        found = false;
+                int[] occurences = allOccurences(chaineChar,mots.get(j)); //pour toutes occurences
+                System.out.println(Arrays.toString(occurences));
+                for(int i = 0; i < occurences.length ; i++){
+                    
+                    int debut = occurences[i];
+                    String searchString = chaineChar.substring(debut, debut+searchSize); //chercher si le string de taille x contient les mots
+                    
+                    boolean found = true;
+                    for(int k = 0; k<mots.size() ; k++){
+                        if(!searchString.contains(mots.get(k))){ 
+                            found = false;
+                            System.out.println(searchString);
+                        }
+                    }
+                    if(found==true){
+                        winIndex = debut;
+                        winLength = searchSize;
+                        winString = searchString; //si oui ok
+                        System.out.println(winIndex);
+                        System.out.println(winLength);
+                        System.out.println(winString);
+                        return;
+                    }else{
+                        
                     }
                 }
-                if(found==true){
-                    winIndex = debut;
-                    winLength = searchSize;
-                    winString = searchString; //si oui ok
-                    return;
-                }else{
-                    searchSize++; //si non on augmente 
-                }
-            }
+            searchSize++; //si non on augmente 
+            }           
         }
+
+
     }
     
 	public static void main(String[] args) {
@@ -113,10 +123,11 @@ public class Main{
 		for(int i=0;i<nbMots;i++){
 			System.out.println(mots.get(i));
 		}
-		System.out.println("chaine =\n"+chaineChar);
+		/* System.out.println("chaine =\n"+chaineChar);
 		System.out.println();
 		int[] test = allOccurences(chaineChar,mots.get(0));
-		System.out.println(Arrays.toString(test));
+		System.out.println(Arrays.toString(test)); */
+        brute();
 	}
 
 }
