@@ -1,5 +1,6 @@
-public class brute {
-    public void brute() {
+public class Brute {
+    
+    public static void brute() {
         int winIndex = Integer.MAX_VALUE;
         int winLength = Integer.MAX_VALUE;
         int winString;
@@ -33,7 +34,7 @@ public class brute {
         }
     }
     
-    public int biggestWord(){
+    public static int biggestWord(){
         int len = 0;
         for(int i = 0; i<mots.length; i++){
             if(String.length(mots[i])>len)
