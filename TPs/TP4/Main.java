@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.io.IOException;
@@ -38,7 +40,7 @@ public class Main {
         return line.split(" ");
     }
 
-    private void parsing(String path) {
+    private static void parsing(String path) {
         // ouverture du fichier passé en argument
         File f = new File(path);
 
@@ -64,37 +66,57 @@ public class Main {
                 nbrDrones = Integer.parseInt(lineSplited[2]);
                 shiftingMax = Integer.parseInt(lineSplited[3]);
                 maxWeight = Integer.parseInt(lineSplited[4]);
+                i+=1;
+                continue;
             }
 
             if (i == 1) {
                 nbrProducts = Integer.parseInt(lineSplited[0]);
+                i+=1;
+                continue;
             }
             if (i == 2) {
                 for (int j = 0; j < nbrProducts; j++) {
                     productsBindweight.put(j, Integer.parseInt(lineSplited[j]));
                 }
+                i+=1;
+                continue;
             }
             // WAREHOUSE
             if (i == 3) {
                 nbrWarehouse = Integer.parseInt(lineSplited[0]);
+                i+=1;
+                continue;
             }
             if (i < i + nbrWarehouse * 2) {
+                System.out.println("rentre dans cond");
                 int iterator = 0;
                 while (iterator < nbrWarehouse) {
                     Entrepot e = new Entrepot(Integer.parseInt(lineSplited[0]), Integer.parseInt(lineSplited[1]));
                     warehouses.add(e);
                     i += 1;
+                    System.out.println("i="+i);
                     lineSplited = split_on_char(ficLines.get(i));
-                    for (int j = 0; j < nbrProducts; j++) {
+                    for (int j = 0; j < lineSplited.length; j++) {
+                        
                         e.getInventaire().put(j, Integer.parseInt(lineSplited[j]));
                     }
+                    i += 1;
+                    lineSplited = split_on_char(ficLines.get(i));
+                    iterator+=1;
                 }
             }
 
             int iterator2 = 0;
             while (iterator2 < nbrDrones) {
-                drones.add(new Drone(warehouses.get(0).getX(), warehouses.get(0).getY(), maxWeight));
-                iterator2 += 1;
+                if(warehouses.size() == 0){
+                    System.out.println("liste vide ");
+                    System.exit(1);
+                }else {
+                    drones.add(new Drone(warehouses.get(0).getX(), warehouses.get(0).getY(), maxWeight));
+                    iterator2 += 1;
+                }
+                
             }
 
             // ORDERS
@@ -132,7 +154,7 @@ public class Main {
         }
     }
 
-    public String loadDrone(Drone d, Entrepot w, Order o, Integer droneID, Integer entrID) {
+    public static String loadDrone(Drone d, Entrepot w, Order o, Integer droneID, Integer entrID) {
         int poids = 0;
 
         for (Map.Entry<Integer, Integer> pair : o.itemsList.entrySet()) {
@@ -157,10 +179,15 @@ public class Main {
         return "nope";
     }
 
-    public int poidsTrajet(int xA, int yA, int xB, int yB) {
+    public static int poidsTrajet(int xA, int yA, int xB, int yB) {
         return (int) Math.sqrt(Math.pow(Math.abs(xA - xB), 2) + Math.pow(Math.abs(yA - yB), 2));
     }
 
     public static void main(String[] args) {
+
+        parsing("inputs/busy_day.in");
+        System.out.println(loadDrone(drones.get(0),warehouses.get(0),ordersList.get(0),0,0));
+        
+
     }
 }
