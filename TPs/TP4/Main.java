@@ -111,10 +111,16 @@ public class Main {
                 int nbrItems = Integer.parseInt(lineSplited[0]);
                 i+=1;
                 lineSplited = split_on_char(ficLines.get(i));
+
                 // liste des items à livrer
-                List<Integer> itemsList = new LinkedList<Integer>();
+                HashMap<Integer, Integer> itemsList = new HashMap<Integer, Integer>();
                 for (int j = 0 ; j < nbrItems ; j++) {
-                    itemsList.add(Integer.parseInt(lineSplited[j]));
+                    // si item déjà présent, on augmente le poids
+                    if (itemsList.containsValue((Integer.parseInt(lineSplited[j])))) {
+                        itemsList.put(Integer.parseInt(lineSplited[j]), itemsList.get(Integer.parseInt(lineSplited[j]))+1);
+                    }
+                    // si item pas présent on ajoute à poids 1
+                    itemsList.put(Integer.parseInt(lineSplited[j]), 1);
                 }
                 ordersList.add(new Order(x, y, nbrItems, itemsList));
             }
