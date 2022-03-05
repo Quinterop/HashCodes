@@ -181,6 +181,29 @@ public class Main {
         return "nope";
     }
 
+    public static String deliver(Drone d, Order o, Integer droneID, Integer orderID) {
+        boolean hasEnough = true;
+        for (Map.Entry<Integer, Integer> pair : o.itemsList.entrySet()) {
+            if (d.inventaire.get(pair.getKey()) < pair.getValue()) {
+                hasEnough = false;
+            }
+        }
+
+        if (hasEnough) {
+            d.x = o.x;
+            d.y = o.y;
+            String rep = "";
+            for (Map.Entry<Integer, Integer> pair : o.itemsList.entrySet()) {
+                int n = pair.getKey();
+                int amount = pair.getValue() / productsBindweight.get(n);
+                dechargeDrone(d, n, amount);
+                rep = rep + '\n' + droneID.toString() + " D " + orderID.toString() + " " + n + " " + amount;
+            }
+            return rep;
+        }
+        return "nope";
+    }
+
     public static int poidsTrajet(int xA, int yA, int xB, int yB) {
         return (int) Math.sqrt(Math.pow(Math.abs(xA - xB), 2) + Math.pow(Math.abs(yA - yB), 2));
     }
@@ -191,10 +214,30 @@ public class Main {
         }
     }
 
+    public static void dechargeDrone(Drone e, int produit, int amount) {
+        for (int i = 0; i < amount; i++) {
+            e.inventaire.put(produit, e.inventaire.get(produit) - productsBindweight.get(produit));
+        }
+    }
+
     public static void main(String[] args) {
 
         parsing("inputs/busy_day.in");
         System.out.println(loadDrone(drones.get(0), warehouses.get(0), ordersList.get(0), 0, 0));
-
     }
+
+    /*
+     * public static String algo(){
+     * if(drones.size()>ordersList.size()){
+     * droneid =0;
+     * entrid = 0;
+     * for (commandes c) {
+     * for(drones d)
+     * loadDrone(d, entrepot 0, c, droneID, entrID)
+     * }
+     * }else{
+     * 
+     * }
+     * }
+     */
 }
