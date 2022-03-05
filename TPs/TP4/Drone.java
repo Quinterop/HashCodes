@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 public class Drone{
 
-    private int x,y,capacite;
-    private HashMap<Integer,Integer> inventaire;
+    public int x,y,capacite;
+    public HashMap<Integer,Integer> inventaire;
 
     public Drone(int x, int y, int capacite){
         this.x=x;
