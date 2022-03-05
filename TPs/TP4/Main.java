@@ -156,11 +156,9 @@ public class Main {
 
     public static String loadDrone(Drone d, Entrepot w, Order o, Integer droneID, Integer entrID) {
         int poids = 0;
-
         for (Map.Entry<Integer, Integer> pair : o.itemsList.entrySet()) {
             poids = poids + pair.getValue();
         }
-
         if (d.capacite > poids) {
             o.itemsList.forEach((k, v) -> {
                 d.addProduct(k, v);
@@ -172,15 +170,21 @@ public class Main {
             for (Map.Entry<Integer, Integer> pair : o.itemsList.entrySet()) {
                 int n = pair.getKey();
                 int amount = pair.getValue() / productsBindweight.get(n);
+                dechargeEntrepot(w, n, amount);
                 rep = rep + '\n' + droneID.toString() + " L " + entrID.toString() + " " + n + " " + amount;
             }
-
         }
         return "nope";
     }
 
     public static int poidsTrajet(int xA, int yA, int xB, int yB) {
         return (int) Math.sqrt(Math.pow(Math.abs(xA - xB), 2) + Math.pow(Math.abs(yA - yB), 2));
+    }
+
+    public static void dechargeEntrepot(Entrepot e, int produit, int amount) {
+        for (int i = 0; i < amount; i++) {
+            e.inventaire.put(produit, e.inventaire.get(produit) - productsBindweight.get(produit));
+        }
     }
 
     public static void main(String[] args) {
