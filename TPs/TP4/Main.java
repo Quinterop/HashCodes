@@ -88,7 +88,7 @@ public class Main {
                 i+=1;
                 continue;
             }
-            if (i < i + nbrWarehouse * 2) {
+            if (i < 3 + nbrWarehouse * 2 + 1) {
                 System.out.println("rentre dans cond");
                 int iterator = 0;
                 while (iterator < nbrWarehouse) {
@@ -120,11 +120,15 @@ public class Main {
             }
 
             // ORDERS
-            if (i == i + nbrWarehouse * 2 + 1) {
+            if (i == 3 + nbrWarehouse * 2 + 1) {
+                lineSplited = split_on_char(ficLines.get(i));
                 nbrOrders = Integer.parseInt(lineSplited[0]);
+                i+=1;
             }
 
-            if (i > i + nbrWarehouse * 2 + 1) {
+            if (i > 3 + nbrWarehouse * 2 + 1) {
+                lineSplited = split_on_char(ficLines.get(i));
+                System.out.println(i);
                 // coordonnées du point d'arrivé
                 int x = Integer.parseInt(lineSplited[0]);
                 int y = Integer.parseInt(lineSplited[1]);
@@ -150,7 +154,7 @@ public class Main {
             }
 
             // WHILE INCREMENTATION
-            i += 1;
+            i++;
         }
     }
 
