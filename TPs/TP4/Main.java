@@ -115,12 +115,13 @@ public class Main {
                 // liste des items à livrer
                 HashMap<Integer, Integer> itemsList = new HashMap<Integer, Integer>();
                 for (int j = 0 ; j < nbrItems ; j++) {
+                    int id = Integer.parseInt(lineSplited[j]);
                     // si item déjà présent, on augmente le poids
                     if (itemsList.containsValue((Integer.parseInt(lineSplited[j])))) {
-                        itemsList.put(Integer.parseInt(lineSplited[j]), itemsList.get(Integer.parseInt(lineSplited[j]))+1);
+                        itemsList.put(id, itemsList.get(id) + productsBindweight.get(id));
                     }
                     // si item pas présent on ajoute à poids 1
-                    itemsList.put(Integer.parseInt(lineSplited[j]), 1);
+                    itemsList.put(id, productsBindweight.get(id));
                 }
                 ordersList.add(new Order(x, y, nbrItems, itemsList));
             }
