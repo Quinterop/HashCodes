@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 import java.io.IOException;
@@ -28,6 +29,8 @@ public class Main {
 	private static String[] lineSplited;
 
     private static ArrayList<Drone> drones = new ArrayList<Drone>();
+
+    private static LinkedList<Order> ordersList = new LinkedList<Order>();
 
 	// Pour convertir la chaine de caractère en tableau
 	public static String[] split_on_char(String line) {
@@ -99,7 +102,21 @@ public class Main {
             }
 
             if (i > i+nbrWarehouse*2+1) {
-
+                // coordonnées du point d'arrivé
+                int x = Integer.parseInt(lineSplited[0]);
+                int y = Integer.parseInt(lineSplited[1]);
+                i+=1;
+                lineSplited = split_on_char(ficLines.get(i));
+                // nombre d'objets à livrer
+                int nbrItems = Integer.parseInt(lineSplited[0]);
+                i+=1;
+                lineSplited = split_on_char(ficLines.get(i));
+                // liste des items à livrer
+                List<Integer> itemsList = new LinkedList<Integer>();
+                for (int j = 0 ; j < nbrItems ; j++) {
+                    itemsList.add(Integer.parseInt(lineSplited[j]));
+                }
+                ordersList.add(new Order(x, y, nbrItems, itemsList));
             }
 
             // WHILE INCREMENTATION
