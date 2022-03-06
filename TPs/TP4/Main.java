@@ -172,8 +172,9 @@ public class Main {
                         nItems.put(nPair.getKey(), nPair.getValue());
                     }
                 }
-                Order order =new Order(o.x, o.y, o.nbrItems-1, nItems);
+                Order order=new Order(o.x, o.y, o.nbrItems-1, nItems);
                 ordersList.add(order);
+                ordersList.remove(o);
             }
         }
         System.out.println("Capacite du drone: "+d.capacite+" Poids de la commande: "+poids);
