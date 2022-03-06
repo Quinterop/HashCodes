@@ -11,4 +11,10 @@ public class Order {
         this.nbrItems = nbrItems;
         this.itemsList = itemsList;
     }
+
+    @Override
+    public String toString() {
+        String a = "(" + x + ";" + y + ")" + " Nombre d'objets: " + nbrItems + "; Types d'objets: " + itemsList;
+        return a;
+    }
 }

@@ -95,7 +95,7 @@ public class Main {
                     Entrepot e = new Entrepot(Integer.parseInt(lineSplited[0]), Integer.parseInt(lineSplited[1]));
                     warehouses.add(e);
                     i += 1;
-        //            System.out.println("i=" + i);
+        //          System.out.println("i=" + i);
                     lineSplited = split_on_char(ficLines.get(i));
                     for (int j = 0; j < lineSplited.length; j++) {
 
@@ -161,8 +161,23 @@ public class Main {
         int poids = 0;
         for (Map.Entry<Integer, Integer> pair : o.itemsList.entrySet()) {
             poids = poids + pair.getValue();
+            if(poids>d.capacite){
+                poids=poids-pair.getValue();
+            }
+            else{
+                pair.setValue(0);
+                HashMap<Integer,Integer> nItems=new HashMap<>();
+                for(Map.Entry<Integer, Integer> nPair : o.itemsList.entrySet()){
+                    if(nPair.getValue()!=0){
+                        nItems.put(nPair.getKey(), nPair.getValue());
+                    }
+                }
+                Order order =new Order(o.x, o.y, o.nbrItems-1, nItems);
+                ordersList.add(order);
+            }
         }
-        if (d.capacite > poids) {
+        System.out.println("Capacite du drone: "+d.capacite+" Poids de la commande: "+poids);
+        if (d.capacite >= poids) {
             o.itemsList.forEach((k, v) -> {
                 d.addProduct(k, v);
             });
@@ -222,8 +237,9 @@ public class Main {
 
     public static void main(String[] args) {
 
-        parsing("inputs/busy_day.in");
+        parsing("inputs/example.in");
         System.out.println(loadDrone(drones.get(0), warehouses.get(0), ordersList.get(0), 0, 0));
+        System.out.println(ordersList.get(0));
     }
 
     /*
