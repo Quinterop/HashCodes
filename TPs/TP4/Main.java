@@ -163,10 +163,10 @@ public class Main {
         int poids = 0;
         String rep = "";
         for (Drone d : drones) {
-            System.out.println(d.poidsTotal()+" aaaa "+d.id);
+            System.out.println("poids dans le drone avant remplissage: "+d.poidsTotal()+" id drone "+d.id);
             for (int i=0;i<ordersList.size();i++) {
                 if(ordersList.get(i).poidsTotal()==0){
-                    System.out.println("test "+ordersList.get(i).id);
+                    System.out.println("id commande terminee: "+ordersList.get(i).id);
                 }
                 else{
                     for (Map.Entry<Integer, Integer> pair : ordersList.get(i).itemsList.entrySet()) {
@@ -206,7 +206,7 @@ public class Main {
                     
                 }
             }
-            System.out.println(d.poidsTotal()+" bbbb "+d.id);
+            System.out.println("poids dans le drone apres remplissage: "+d.poidsTotal()+" id drone "+d.id);
         }
         return rep;
     }
