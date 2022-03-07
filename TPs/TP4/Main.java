@@ -168,17 +168,17 @@ public class Main {
             }
             else{
                 pair.setValue(0);
-                HashMap<Integer,Integer> nItems=new HashMap<>();
-                for(Map.Entry<Integer, Integer> nPair : o.itemsList.entrySet()){
-                    if(nPair.getValue()!=0){
-                        nItems.put(nPair.getKey(), nPair.getValue());
-                    }
-                }
-                Order order=new Order(o.x, o.y, o.nbrItems-1, nItems);
-                ordersList.add(order);
-                ordersList.remove(o);
             }
         }
+        HashMap<Integer,Integer> nItems=new HashMap<>();
+        for(Map.Entry<Integer, Integer> nPair : o.itemsList.entrySet()){
+            if(nPair.getValue()!=0){
+                nItems.put(nPair.getKey(), nPair.getValue());
+            }
+        }
+        Order order=new Order(o.x, o.y, o.nbrItems-1, nItems);
+        ordersList.add(order);
+        ordersList.remove(o);
         System.out.println("Capacite du drone: "+d.capacite+" Poids de la commande: "+poids);
         if (d.capacite >= poids) {
             o.itemsList.forEach((k, v) -> {
