@@ -272,6 +272,8 @@ public class Main {
 		}
 	}
 
+    
+
 
     private static Entrepot closestWarehouse (Drone d, Order o){
         Entrepot e = warehouses.get(0);
@@ -290,7 +292,19 @@ public class Main {
         return e;
     }
     
+    private static Order closestOrder(Entrepot w){
+        Order o = ordersList.get(0);
+        int bestDist = -1;
+        for(int i=0;i<ordersList.size();i++){
+            int distance = poidsTrajet(w.x,w.y,ordersList.get(i).x,ordersList.get(i).y);
+            if(bestDist==-1 || bestDist>distance){
+                o = ordersList.get(i);
+                bestDist=distance;
+            }
+        }
 
+        return o;
+    }
 
 
     public static void main(String[] args) {
