@@ -159,44 +159,56 @@ public class Main {
         }
     }
 
-    public static String loadDrone(Drone d, Entrepot w, Order o, Integer droneID, Integer entrID) {
+    public static String loadDrone(Entrepot w, Integer droneID, Integer entrID) {
         int poids = 0;
-        for (Map.Entry<Integer, Integer> pair : o.itemsList.entrySet()) {
-            poids = poids + pair.getValue();
-            if(poids>d.capacite){
-                poids=poids-pair.getValue();
+        String rep = "";
+        for (Drone d : drones) {
+            System.out.println(d.poidsTotal()+" aaaa "+d.id);
+            for (int i=0;i<ordersList.size();i++) {
+                if(ordersList.get(i).poidsTotal()==0){
+                    System.out.println("test "+ordersList.get(i).id);
+                }
+                else{
+                    for (Map.Entry<Integer, Integer> pair : ordersList.get(i).itemsList.entrySet()) {
+                        poids = poids + pair.getValue();
+                        if(poids>d.capacite){
+                            poids=poids-pair.getValue();
+                        }
+                        else if(poids<=d.capacite-d.poidsTotal()){
+                            d.addProduct(pair.getKey(), pair.getValue());
+                            pair.setValue(0);
+                        }
+                    }
+                    if (d.capacite-d.poidsTotal() >= poids) {
+                        /*ordersList.get(i).itemsList.forEach((k, v) -> {
+                            d.addProduct(k, v);
+                        });*/
+                        d.x = w.x;
+                        d.y = w.y;
+                        System.out.println("Capacite du drone: "+d.capacite+" Poids de l'inventaire du drone: "+poids+ " Poids de la commande: " + ordersList.get(i).poidsTotal() +" ID du drone: "+d.id+" ID de la commande: "+ordersList.get(i).id);
+                        for (Map.Entry<Integer, Integer> pair : ordersList.get(i).itemsList.entrySet()) {
+                            int n = pair.getKey();
+                            int amount = pair.getValue() / productsBindweight.get(n);
+                            dechargeEntrepot(w, n, amount);
+                            rep = rep + droneID.toString() + " L " + entrID.toString() + " " + n + " " + amount + '\n';
+                        } 
+                    }
+                    poids=0;
+                    /*HashMap<Integer,Integer> nItems=new HashMap<>();
+                    for(Map.Entry<Integer, Integer> nPair : ordersList.get(i).itemsList.entrySet()){
+                        if(nPair.getValue()!=0){
+                            nItems.put(nPair.getKey(), nPair.getValue());
+                        }
+                    }
+                    Order order=new Order(ordersList.get(i).x, ordersList.get(i).y, ordersList.get(i).nbrItems-1, nItems);
+                    ordersList.add(order);
+                    ordersList.remove(i);*/
+                    
+                }
             }
-            else{
-                pair.setValue(0);
-            }
+            System.out.println(d.poidsTotal()+" bbbb "+d.id);
         }
-        HashMap<Integer,Integer> nItems=new HashMap<>();
-        for(Map.Entry<Integer, Integer> nPair : o.itemsList.entrySet()){
-            if(nPair.getValue()!=0){
-                nItems.put(nPair.getKey(), nPair.getValue());
-            }
-        }
-        Order order=new Order(o.x, o.y, o.nbrItems-1, nItems);
-        ordersList.add(order);
-        ordersList.remove(o);
-        System.out.println("Capacite du drone: "+d.capacite+" Poids de la commande: "+poids);
-        if (d.capacite >= poids) {
-            o.itemsList.forEach((k, v) -> {
-                d.addProduct(k, v);
-            });
-            d.x = w.x;
-            d.y = w.y;
-            String rep = "";
-
-            for (Map.Entry<Integer, Integer> pair : o.itemsList.entrySet()) {
-                int n = pair.getKey();
-                int amount = pair.getValue() / productsBindweight.get(n);
-                dechargeEntrepot(w, n, amount);
-                rep = rep + droneID.toString() + " L " + entrID.toString() + " " + n + " " + amount + '\n';
-            }
-            return rep;
-        }
-        return "nope";
+        return rep;
     }
 
     public static String deliver(Drone d, Order o, Integer droneID, Integer orderID) {
@@ -259,8 +271,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        parsing("inputs/busy_day.in");
-        String res = loadDrone(drones.get(0), warehouses.get(0), ordersList.get(0), 0, 0);
+        parsing("inputs/example.in");
+        String res = loadDrone(warehouses.get(0), 0, 0);
         System.out.println(res);
         System.out.println(ordersList.get(0));
         writeOutput(res);
