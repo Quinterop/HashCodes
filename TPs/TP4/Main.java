@@ -1,5 +1,7 @@
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -190,7 +192,7 @@ public class Main {
                 int n = pair.getKey();
                 int amount = pair.getValue() / productsBindweight.get(n);
                 dechargeEntrepot(w, n, amount);
-                rep = rep + '\n' + droneID.toString() + " L " + entrID.toString() + " " + n + " " + amount;
+                rep = rep + droneID.toString() + " L " + entrID.toString() + " " + n + " " + amount + '\n';
             }
             return rep;
         }
@@ -213,7 +215,7 @@ public class Main {
                 int n = pair.getKey();
                 int amount = pair.getValue() / productsBindweight.get(n);
                 dechargeDrone(d, n, amount);
-                rep = rep + '\n' + droneID.toString() + " D " + orderID.toString() + " " + n + " " + amount;
+                rep = rep + droneID.toString() + " D " + orderID.toString() + " " + n + " " + amount + '\n' ;
             }
             return rep;
         }
@@ -236,11 +238,32 @@ public class Main {
         }
     }
 
+    private static void writeOutput(String res) {
+		try {
+			System.out.println("Début écriture résultat");
+			File outputfile = new File("res.out");
+			outputfile.createNewFile();
+
+			FileWriter fw = new FileWriter(outputfile.getAbsoluteFile());
+			BufferedWriter bw = new BufferedWriter(fw);
+
+            bw.write(res);
+
+			bw.close();
+			System.out.println("Fin écriture résultat");
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
     public static void main(String[] args) {
 
-        parsing("inputs/example.in");
-        System.out.println(loadDrone(drones.get(0), warehouses.get(0), ordersList.get(0), 0, 0));
+        parsing("inputs/busy_day.in");
+        String res = loadDrone(drones.get(0), warehouses.get(0), ordersList.get(0), 0, 0);
+        System.out.println(res);
         System.out.println(ordersList.get(0));
+        writeOutput(res);
     }
 
     /*
