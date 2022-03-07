@@ -272,6 +272,27 @@ public class Main {
 		}
 	}
 
+
+    private static Entrepot closestWarehouse (Drone d, Order o){
+        Entrepot e = warehouses.get(0);
+        int poids = 0;
+        for (Map.Entry<Integer, Integer> pair : o.itemsList.entrySet()) {
+            poids = poids + pair.getValue();
+        }
+        int bestDist = -1;
+        for(int i=0;i<warehouses.size();i++){
+            int distance = poidsTrajet(d.x,d.y,warehouses.get(i).x,warehouses.get(i).y);
+            if(bestDist==-1 || bestDist>distance){
+                e = warehouses.get(i);
+            }
+        }
+
+        return e;
+    }
+    
+
+
+
     public static void main(String[] args) {
 
         parsing("inputs/busy_day.in");
