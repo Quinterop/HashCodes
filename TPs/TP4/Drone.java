@@ -4,13 +4,14 @@ import java.util.HashMap;
 
 public class Drone{
 
-    public int x,y,capacite;
+    public int x, y, capacite, id;
     public HashMap<Integer,Integer> inventaire;
 
-    public Drone(int x, int y, int capacite){
+    public Drone(int x, int y, int capacite, int id){
         this.x=x;
         this.y=y;
         this.capacite=capacite;
+        this.id = id;
         this.inventaire=new HashMap<Integer,Integer>();
     }
 

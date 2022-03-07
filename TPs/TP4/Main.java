@@ -102,7 +102,7 @@ public class Main {
                 int iterator = 0;
                 while (iterator < nbrWarehouse) {
                     // création d'un entrepot avec ses coordonnées (x, y)
-                    Entrepot e = new Entrepot(Integer.parseInt(lineSplited[0]), Integer.parseInt(lineSplited[1]));
+                    Entrepot e = new Entrepot(Integer.parseInt(lineSplited[0]), Integer.parseInt(lineSplited[1]), warehouses.size());
                     // ajout du nouvel entrepot à la liste d'entrepots
                     warehouses.add(e);
                     i += 1;
@@ -123,7 +123,7 @@ public class Main {
                         System.exit(1);
                     } else {
                         // création des drones à la position du premier entrepot
-                        drones.add(new Drone(warehouses.get(0).getX(), warehouses.get(0).getY(), maxWeight));
+                        drones.add(new Drone(warehouses.get(0).getX(), warehouses.get(0).getY(), maxWeight, drones.size()));
                         iterator2 += 1;
                     }
 
@@ -166,7 +166,7 @@ public class Main {
         }
     }
 
-    public static String loadDrone(Drone d, Entrepot w, Order o, Integer droneID, Integer entrID) {
+    public static String loadDrone(Drone d, Entrepot w, Order o) {
         int poids = 0;
         for (Map.Entry<Integer, Integer> pair : o.itemsList.entrySet()) {
             poids = poids + pair.getValue();
@@ -199,7 +199,7 @@ public class Main {
                 int n = pair.getKey();
                 int amount = pair.getValue() / productsBindweight.get(n);
                 dechargeEntrepot(w, n, amount);
-                rep = rep + droneID.toString() + " L " + entrID.toString() + " " + n + " " + amount + '\n';
+                rep = rep + d.id + " L " + w.id + " " + n + " " + amount + '\n';
             }
             return rep;
         }
@@ -275,7 +275,7 @@ public class Main {
     public static void main(String[] args) {
 
         parsing("inputs/busy_day.in");
-        String res = loadDrone(drones.get(0), warehouses.get(0), ordersList.get(0), 0, 0);
+        String res = loadDrone(drones.get(0), warehouses.get(0), ordersList.get(0));
         System.out.println(res);
         System.out.println(ordersList.get(0));
         writeOutput(res);

@@ -3,12 +3,13 @@ import java.util.HashMap;
 
 public class Entrepot {
     
-    int x,y;
+    int x, y, id;
     HashMap<Integer,Integer> inventaire;
 
-    public Entrepot(int x, int y){
-        this.x=x;
-        this.y=y;
+    public Entrepot(int x, int y, int id){
+        this.x = x;
+        this.y = y;
+        this.id = id;
         this.inventaire= new HashMap<>();
     }
 
