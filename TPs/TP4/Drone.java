@@ -27,6 +27,14 @@ public class Drone{
         inventaire.remove(id);
     }
 
+    public int poidsTotal(){
+        int cmp=0;
+        for (Integer a : inventaire.keySet()) {
+            cmp+=inventaire.get(a);
+        }
+        return cmp;
+    }
+
 }
     
 
