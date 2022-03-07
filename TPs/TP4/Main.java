@@ -25,15 +25,16 @@ public class Main {
 
     private static HashMap<Integer, Integer> productsBindweight = new HashMap<Integer, Integer>();
 
-    private static List<Entrepot> warehouses = new ArrayList<Entrepot>();
+    // liste des entrepots
+    private static List<Entrepot> warehouses = new LinkedList<Entrepot>();
 
     // Liste de toutes les lignes
-    private static ArrayList<String> ficLines = new ArrayList<String>();
+    private static List<String> ficLines = new LinkedList<String>();
 
     // tableau pour stocker chaque mot de la ligne courante
     private static String[] lineSplited;
 
-    private static ArrayList<Drone> drones = new ArrayList<Drone>();
+    private static List<Drone> drones = new LinkedList<Drone>();
 
     private static LinkedList<Order> ordersList = new LinkedList<Order>();
 
@@ -62,6 +63,7 @@ public class Main {
         while (i < ficLines.size()) {
             lineSplited = split_on_char(ficLines.get(i));
 
+            // initialisation des premiers champs
             if (i == 0) {
                 gridX = Integer.parseInt(lineSplited[0]);
                 gridY = Integer.parseInt(lineSplited[1]);
@@ -72,11 +74,14 @@ public class Main {
                 continue;
             }
 
+            // initialisation nombre de produits
             if (i == 1) {
                 nbrProducts = Integer.parseInt(lineSplited[0]);
                 i += 1;
                 continue;
             }
+
+            // initialisation de la map liant chaque produit à son poids
             if (i == 2) {
                 for (int j = 0; j < nbrProducts; j++) {
                     productsBindweight.put(j, Integer.parseInt(lineSplited[j]));
@@ -84,23 +89,26 @@ public class Main {
                 i += 1;
                 continue;
             }
-            // WAREHOUSE
+            
+            // initialisation du nombre d'entrepots
             if (i == 3) {
                 nbrWarehouse = Integer.parseInt(lineSplited[0]);
                 i += 1;
                 continue;
             }
 
+            // création des entrepots
             if (i < 3 + nbrWarehouse * 2 + 1) {
                 int iterator = 0;
                 while (iterator < nbrWarehouse) {
+                    // création d'un entrepot avec ses coordonnées (x, y)
                     Entrepot e = new Entrepot(Integer.parseInt(lineSplited[0]), Integer.parseInt(lineSplited[1]));
+                    // ajout du nouvel entrepot à la liste d'entrepots
                     warehouses.add(e);
                     i += 1;
-        //          System.out.println("i=" + i);
                     lineSplited = split_on_char(ficLines.get(i));
+                    // remplissage de l'entrepot avec ses produits
                     for (int j = 0; j < lineSplited.length; j++) {
-
                         e.getInventaire().put(j, Integer.parseInt(lineSplited[j]));
                     }
                     i += 1;
@@ -114,6 +122,7 @@ public class Main {
                         System.out.println("liste vide ");
                         System.exit(1);
                     } else {
+                        // création des drones à la position du premier entrepot
                         drones.add(new Drone(warehouses.get(0).getX(), warehouses.get(0).getY(), maxWeight));
                         iterator2 += 1;
                     }
@@ -122,7 +131,7 @@ public class Main {
                 continue;
             }
 
-            // ORDERS
+            // récupération du nombre de commandes à traiter
             if (i == 3 + nbrWarehouse * 2 + 1) {
                 nbrOrders = Integer.parseInt(lineSplited[0]);
                 i += 1;
@@ -153,8 +162,6 @@ public class Main {
                 }
                 ordersList.add(new Order(x, y, nbrItems, itemsList));
             }
-
-            // WHILE INCREMENTATION
             i++;
         }
     }
@@ -222,25 +229,33 @@ public class Main {
         return "nope";
     }
 
+    // donne les distance entre les points A et B
     public static int poidsTrajet(int xA, int yA, int xB, int yB) {
         return (int) Math.sqrt(Math.pow(Math.abs(xA - xB), 2) + Math.pow(Math.abs(yA - yB), 2));
     }
 
+    // retire le produit et son nombre de l'entrepot e
     public static void dechargeEntrepot(Entrepot e, int produit, int amount) {
         for (int i = 0; i < amount; i++) {
-            e.inventaire.put(produit, e.inventaire.get(produit) - productsBindweight.get(produit));
+            if (e.inventaire.get(produit) >= amount) {
+                e.inventaire.put(produit, e.inventaire.get(produit) - productsBindweight.get(produit));
+            } 
         }
     }
 
-    public static void dechargeDrone(Drone e, int produit, int amount) {
+    // retire le produit et son nombre du drone d
+    public static void dechargeDrone(Drone d, int produit, int amount) {
         for (int i = 0; i < amount; i++) {
-            e.inventaire.put(produit, e.inventaire.get(produit) - productsBindweight.get(produit));
+            if (d.inventaire.get(produit) >= amount) {
+                d.inventaire.put(produit, d.inventaire.get(produit) - productsBindweight.get(produit));
+            }
         }
     }
 
+    // écriture du résultat dans un fichier res.out
     private static void writeOutput(String res) {
 		try {
-			System.out.println("Début écriture résultat");
+			System.out.println("Debut ecriture resultat");
 			File outputfile = new File("res.out");
 			outputfile.createNewFile();
 
@@ -250,7 +265,7 @@ public class Main {
             bw.write(res);
 
 			bw.close();
-			System.out.println("Fin écriture résultat");
+			System.out.println("Fin ecriture resultat");
 
 		} catch (IOException e) {
 			e.printStackTrace();
