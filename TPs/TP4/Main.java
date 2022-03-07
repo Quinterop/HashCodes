@@ -275,21 +275,40 @@ public class Main {
     
 
 
-    private static Entrepot closestWarehouse (Drone d, Order o){
+    private static Entrepot closestWarehouse(Drone d, Order o) {
         Entrepot e = warehouses.get(0);
         int poids = 0;
         for (Map.Entry<Integer, Integer> pair : o.itemsList.entrySet()) {
             poids = poids + pair.getValue();
         }
         int bestDist = -1;
-        for(int i=0;i<warehouses.size();i++){
-            int distance = poidsTrajet(d.x,d.y,warehouses.get(i).x,warehouses.get(i).y);
-            if(bestDist==-1 || bestDist>distance){
+        for (int i = 0; i < warehouses.size(); i++) {
+            int distance = poidsTrajet(d.x, d.y, warehouses.get(i).x, warehouses.get(i).y);
+            if (bestDist == -1 || bestDist > distance && canLoad(o, warehouses.get(i))) {
                 e = warehouses.get(i);
+                bestDist = distance;
             }
         }
-
         return e;
+    }
+
+    private static boolean canLoad(Order o, Entrepot e) {
+        for (Map.Entry<Integer, Integer> pair : o.itemsList.entrySet()) {
+            int n = pair.getKey();
+            if (e.inventaire.get(n) < pair.getValue()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static int distanceCommande(Drone d, Order o, int droneID) {
+        int dToW;
+        int WtoD;
+        Entrepot pres = closestWarehouse(d, o);
+        dToW = poidsTrajet(d.x, d.y, pres.x, pres.y);
+        WtoD = poidsTrajet(o.x, o.y, pres.x, pres.y);
+        return dToW + WtoD;
     }
     
     private static Order closestOrder(Entrepot w){
