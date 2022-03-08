@@ -249,6 +249,36 @@ public class Main {
         return rep;
     }
 
+    public static int shifting(int x, int y, int prevShift, Drone drone) {
+        if(drone.x < x && drone.y < y) {
+            drone.x+=1;
+            drone.y+=1;
+            return shifting(x, y, prevShift+(int)Math.sqrt(2), drone);
+        }
+        if(drone.x > x && drone.y > y) {
+            drone.x-=1;
+            drone.y-=1;
+            return shifting(x, y, prevShift+(int)Math.sqrt(2), drone);
+        }
+        if (drone.x < x && drone.y == y) {
+            drone.x+=1;
+            return shifting(x, y, prevShift+1, drone);
+        }
+        if (drone.x > x && drone.y == y) {
+            drone.x-=1;
+            return shifting(x, y, prevShift+1, drone);
+        }
+        if (drone.x == x && drone.y < y) {
+            drone.y+=1;
+            return shifting(x, y, prevShift+1, drone);
+        }
+        if (drone.x == x && drone.y > y) {
+            drone.y-=1;
+            return shifting(x, y, prevShift+1, drone);
+        }
+        return prevShift;
+    }
+
     public static String deliver(Drone d, Order o, Integer droneID, Integer orderID) {
         boolean hasEnough = true;
         for (Map.Entry<Integer, Integer> pair : o.itemsList.entrySet()) {
