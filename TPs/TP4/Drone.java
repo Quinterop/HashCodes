@@ -6,6 +6,7 @@ public class Drone{
 
     public int x, y, capacite, id;
     public HashMap<Integer,Integer> inventaire;
+    public Entrepot entrepot;
 
     public Drone(int x, int y, int capacite, int id){
         this.x=x;
@@ -13,6 +14,7 @@ public class Drone{
         this.capacite=capacite;
         this.id = id;
         this.inventaire=new HashMap<Integer,Integer>();
+        this.entrepot = null;
     }
 
     public void addProduct(int product, int weight) {

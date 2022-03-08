@@ -165,23 +165,33 @@ public class Main {
             i++;
         }
     }
+    
+    public static void loadDrone(Drone drone) {
+        
+    }
 
-    public static String loadDrone(Entrepot w) {
+    public static String loadDroneInit(Entrepot w) {
         int poids = 0;
         String rep = "";
+        // pour chaque drone
         for (Drone d : drones) {
             System.out.println("poids dans le drone avant remplissage: "+d.poidsTotal()+" id drone "+d.id);
+
             for (int i=0;i<ordersList.size();i++) {
-                if(i==ordersList.size()-1)System.out.println(i+" JE SUIS LA MON PELOOOOOOOOOO");
+                if(i==ordersList.size()-1) {
+                    System.out.println(i+" JE SUIS LA MON PELOOOOOOOOOO");
+                }
                 if(ordersList.get(i).poidsTotal()==0){
                     System.out.println("id commande terminee: "+ordersList.get(i).id);
                 }
                 else{
+                    // pour chaque commande : regarder si poids total inférieur capacité drone
                     for (Map.Entry<Integer, Integer> pair : ordersList.get(i).itemsList.entrySet()) {
                         poids = poids + pair.getValue();
                         if(poids>d.capacite){
                             poids=poids-pair.getValue();
                         }
+                        // si objet est dans l'entrepot courant, charger drone
                         else if(poids<=d.capacite-d.poidsTotal()){
                             if(w.inventaire.get(pair.getKey())!=0){
                                 d.addProduct(pair.getKey(), pair.getValue());
@@ -189,6 +199,7 @@ public class Main {
                             }
                         }
                     }
+                    // output
                     if (d.capacite-d.poidsTotal() >= poids) {
                         /*ordersList.get(i).itemsList.forEach((k, v) -> {
                             d.addProduct(k, v);
@@ -344,7 +355,7 @@ public class Main {
     public static void main(String[] args) {
 
         parsing("inputs/example.in");
-        String res = loadDrone(warehouses.get(0));
+        String res = loadDroneInit(warehouses.get(0));
         System.out.println(res);
         System.out.println(ordersList.get(0));
         writeOutput(res);
