@@ -123,7 +123,7 @@ public class Main {
                         System.exit(1);
                     } else {
                         // création des drones à la position du premier entrepot
-                        drones.add(new Drone(warehouses.get(0).getX(), warehouses.get(0).getY(), maxWeight, drones.size()));
+                        drones.add(new Drone(warehouses.get(0).getX(), warehouses.get(0).getY(), maxWeight, drones.size(),warehouses.get(0)));
                         iterator2 += 1;
                     }
 
@@ -167,7 +167,24 @@ public class Main {
     }
     
     public static void loadDrone(Drone drone) {
-        
+        int poids=0;
+        for (int i=0;i<ordersList.size();i++) {
+            // pour chaque commande : regarder si poids total inférieur capacité drone
+            for (Map.Entry<Integer, Integer> pair : ordersList.get(i).itemsList.entrySet()) {
+                poids = poids + pair.getValue();
+                if(poids>drone.capacite){
+                    poids=poids-pair.getValue();
+                }
+                // si objet est dans l'entrepot courant, charger drone
+                else if(poids<=drone.capacite-drone.poidsTotal()){
+                    if(drone.entrepot.inventaire.get(pair.getKey())!=0){
+                        drone.addProduct(pair.getKey(), pair.getValue());
+                        pair.setValue(0);
+                        drone.entrepot.removeProduct(pair.getKey(), pair.getValue());
+                    }
+                }
+            }
+        }
     }
 
     public static String loadDroneInit(Entrepot w) {

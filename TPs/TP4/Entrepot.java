@@ -24,4 +24,13 @@ public class Entrepot {
         return y;
     }
 
+    public void removeProduct(int product, int weight) {
+        if (inventaire.get(product)==weight) {
+            inventaire.put(product, 0);
+        }
+        else if(inventaire.get(product)<weight){
+            inventaire.put(product, inventaire.get(product)-weight);
+        }
+    }
+
 }
