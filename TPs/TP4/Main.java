@@ -182,9 +182,18 @@ public class Main {
                         pair.setValue(0);
                         drone.entrepot.removeProduct(pair.getKey(), pair.getValue());
                     }
+                    else{
+                        redirectDrone(drone,ordersList.get(i));
+                        loadDrone(drone);
+                    }
                 }
             }
         }
+    }
+
+    public static void redirectDrone(Drone drone,Order order){
+        drone.entrepot=closestWarehouse(drone, order);
+        shiftingMax=shiftingMax-shifting(drone.entrepot.x, drone.entrepot.y, 0, drone);
     }
 
     public static String loadDroneInit(Entrepot w) {
