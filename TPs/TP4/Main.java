@@ -184,13 +184,13 @@ public class Main {
                         drone.addProduct(pair.getKey(), pair.getValue());
                         pair.setValue(0);
                         drone.entrepot.removeProduct(pair.getKey(), pair.getValue());
-                    }
-                    else{
-                        redirectDrone(drone,ordersList.get(i));
-                        loadDrone(drone,a++);
-                        if(a>=warehouses.size()){
-                            return a;
-                        }
+                    } else {
+                        redirectDrone(drone, ordersList.get(i));
+                        /*
+                         * if (loadDrone(drone, a++) >= warehouses.size()) {
+                         * return a;
+                         * }
+                         */
                     }
                 }
             }
@@ -198,9 +198,9 @@ public class Main {
         return 0;
     }
 
-    public static void redirectDrone(Drone drone,Order order){
-        drone.entrepot=closestWarehouse(drone, order);
-        shiftingMax=shiftingMax-shifting(drone.entrepot.x, drone.entrepot.y, 0, drone);
+    public static void redirectDrone(Drone drone, Order order) {
+        drone.entrepot = closestWarehouse(drone, order);
+        shiftingMax = shiftingMax - shifting(drone.entrepot.x, drone.entrepot.y, 0, drone);
     }
 
     public static String loadDroneInit(Entrepot w) {
@@ -212,7 +212,7 @@ public class Main {
 
             for (int i = 0; i < ordersList.size(); i++) {
                 if (i == ordersList.size() - 1) {
-                    System.out.println(i + " JE SUIS LA MON PELOOOOOOOOOO");
+                    System.out.println(i + " commande chargee");
                 }
                 if (ordersList.get(i).poidsTotal() == 0) {
                     System.out.println("id commande terminee: " + ordersList.get(i).id);
@@ -302,7 +302,9 @@ public class Main {
         return prevShift;
     }
 
-    public static String deliver(Drone d, Order o, Integer droneID, Integer orderID) {
+    public static String deliver(Drone d, Order o) {
+        Integer droneID = d.id;
+        Integer orderID = o.id;
         boolean hasEnough = true;
         for (Map.Entry<Integer, Integer> pair : o.itemsList.entrySet()) {
             if (d.inventaire.get(pair.getKey()) < pair.getValue()) {
@@ -395,7 +397,7 @@ public class Main {
         return true;
     }
 
-    public static int distanceCommande(Drone d, Order o, int droneID) {
+    public static int distanceCommande(Drone d, Order o, Integer droneID) {
         int dToW;
         int WtoD;
         Entrepot pres = closestWarehouse(d, o);
@@ -418,6 +420,24 @@ public class Main {
         return o;
     }
 
+    public static Order checkCommande(Drone d) {
+        for (int i = 0; i < ordersList.size(); i++) {
+            boolean h = false;
+            int nbrIt = 0;
+            // Iterator keyIterator = ordersList.get(i).itemsList.keySet().iterator();
+            List<Integer> orders = new ArrayList<Integer>(ordersList.get(i).itemsList.keySet());
+            for (int j = 0; j < orders.size(); j++) {
+                if (d.inventaire.containsKey(orders.get(j)) && d.inventaire.get(orders.get(j)) > 0) {
+                    nbrIt += 1;
+                }
+            }
+            if (nbrIt >= ordersList.get(i).nbrItems) {
+                return ordersList.get(i);
+            }
+        }
+        return null;
+    }
+
     public static void trierCommandes() {
         HashMap<Integer, Order> orders = new HashMap<Integer, Order>();
         ArrayList<Integer> poids = new ArrayList<Integer>();
@@ -431,26 +451,34 @@ public class Main {
     }
 
     public static void main(String[] args) {
-
         parsing("inputs/example.in");
-        String res = loadDroneInit(warehouses.get(0));
-        System.out.println(res);
-        System.out.println(ordersList.get(0));
-        writeOutput(res);
-    }
+        trierCommandes();
+        String output = "";
+        loadDroneInit(warehouses.get(0));
+        while (true) {
 
-    /*
-     * public static String algo(){
-     * if(drones.size()>ordersList.size()){
-     * droneid =0;
-     * entrid = 0;
-     * for (commandes c) {
-     * for(drones d)
-     * loadDrone(d, entrepot 0, c, droneID, entrID)
-     * }
-     * }else{
-     * 
-     * }
-     * }
-     */
+            for (int i = 0; i < nbrDrones; i++) {
+                Order temp = checkCommande(drones.get(i));
+                String res = "";
+                if (temp != null) {
+                    res = deliver(drones.get(i), temp);
+                } else
+                    res = "nope";
+                if (!res.equals("nope")) {
+                    output += res;
+                    if (sortedOrders.isEmpty()) {
+                        System.out.println(output);
+                        return;
+                    }
+                    sortedOrders.remove(i);
+                }
+                drones.get(i).entrepot = closestWarehouse(drones.get(i), ordersList.get(0));
+                drones.get(i).x = drones.get(i).entrepot.x;
+                drones.get(i).y = drones.get(i).entrepot.y;
+                loadDrone(drones.get(i), 0);
+
+            }
+        }
+
+    }
 }
