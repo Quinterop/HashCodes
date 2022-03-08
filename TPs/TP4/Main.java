@@ -169,7 +169,7 @@ public class Main {
         }
     }
 
-    public static void loadDrone(Drone drone) {
+    public static int loadDrone(Drone drone, int a) {
         int poids = 0;
         for (int i = 0; i < ordersList.size(); i++) {
             // pour chaque commande : regarder si poids total inférieur capacité drone
@@ -187,11 +187,15 @@ public class Main {
                     }
                     else{
                         redirectDrone(drone,ordersList.get(i));
-                        loadDrone(drone);
+                        loadDrone(drone,a++);
+                        if(a>=warehouses.size()){
+                            return a;
+                        }
                     }
                 }
             }
         }
+        return 0;
     }
 
     public static void redirectDrone(Drone drone,Order order){
