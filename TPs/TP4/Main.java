@@ -172,6 +172,7 @@ public class Main {
         for (Drone d : drones) {
             System.out.println("poids dans le drone avant remplissage: "+d.poidsTotal()+" id drone "+d.id);
             for (int i=0;i<ordersList.size();i++) {
+                if(i==ordersList.size()-1)System.out.println(i+" JE SUIS LA MON PELOOOOOOOOOO");
                 if(ordersList.get(i).poidsTotal()==0){
                     System.out.println("id commande terminee: "+ordersList.get(i).id);
                 }
@@ -182,8 +183,10 @@ public class Main {
                             poids=poids-pair.getValue();
                         }
                         else if(poids<=d.capacite-d.poidsTotal()){
-                            d.addProduct(pair.getKey(), pair.getValue());
-                            pair.setValue(0);
+                            if(w.inventaire.get(pair.getKey())!=0){
+                                d.addProduct(pair.getKey(), pair.getValue());
+                                pair.setValue(0);
+                            }
                         }
                     }
                     if (d.capacite-d.poidsTotal() >= poids) {
