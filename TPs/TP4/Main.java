@@ -37,6 +37,7 @@ public class Main {
     private static List<Drone> drones = new LinkedList<Drone>();
 
     private static LinkedList<Order> ordersList = new LinkedList<Order>();
+    public static ArrayList<Order> sortedOrders = new ArrayList<Order>();
 
     // Pour convertir la chaine de caractère en tableau
     public static String[] split_on_char(String line) {
@@ -89,7 +90,7 @@ public class Main {
                 i += 1;
                 continue;
             }
-            
+
             // initialisation du nombre d'entrepots
             if (i == 3) {
                 nbrWarehouse = Integer.parseInt(lineSplited[0]);
@@ -102,7 +103,8 @@ public class Main {
                 int iterator = 0;
                 while (iterator < nbrWarehouse) {
                     // création d'un entrepot avec ses coordonnées (x, y)
-                    Entrepot e = new Entrepot(Integer.parseInt(lineSplited[0]), Integer.parseInt(lineSplited[1]), warehouses.size());
+                    Entrepot e = new Entrepot(Integer.parseInt(lineSplited[0]), Integer.parseInt(lineSplited[1]),
+                            warehouses.size());
                     // ajout du nouvel entrepot à la liste d'entrepots
                     warehouses.add(e);
                     i += 1;
@@ -123,7 +125,8 @@ public class Main {
                         System.exit(1);
                     } else {
                         // création des drones à la position du premier entrepot
-                        drones.add(new Drone(warehouses.get(0).getX(), warehouses.get(0).getY(), maxWeight, drones.size(),warehouses.get(0)));
+                        drones.add(new Drone(warehouses.get(0).getX(), warehouses.get(0).getY(), maxWeight,
+                                drones.size(), warehouses.get(0)));
                         iterator2 += 1;
                     }
 
@@ -160,24 +163,24 @@ public class Main {
                     // si item pas présent on ajoute à poids 1
                     itemsList.put(id, productsBindweight.get(id));
                 }
-                ordersList.add(new Order(x, y, nbrItems, itemsList,ordersList.size()));
+                ordersList.add(new Order(x, y, nbrItems, itemsList, ordersList.size()));
             }
             i++;
         }
     }
-    
+
     public static void loadDrone(Drone drone) {
-        int poids=0;
-        for (int i=0;i<ordersList.size();i++) {
+        int poids = 0;
+        for (int i = 0; i < ordersList.size(); i++) {
             // pour chaque commande : regarder si poids total inférieur capacité drone
             for (Map.Entry<Integer, Integer> pair : ordersList.get(i).itemsList.entrySet()) {
                 poids = poids + pair.getValue();
-                if(poids>drone.capacite){
-                    poids=poids-pair.getValue();
+                if (poids > drone.capacite) {
+                    poids = poids - pair.getValue();
                 }
                 // si objet est dans l'entrepot courant, charger drone
-                else if(poids<=drone.capacite-drone.poidsTotal()){
-                    if(drone.entrepot.inventaire.get(pair.getKey())!=0){
+                else if (poids <= drone.capacite - drone.poidsTotal()) {
+                    if (drone.entrepot.inventaire.get(pair.getKey()) != 0) {
                         drone.addProduct(pair.getKey(), pair.getValue());
                         pair.setValue(0);
                         drone.entrepot.removeProduct(pair.getKey(), pair.getValue());
@@ -192,89 +195,96 @@ public class Main {
         String rep = "";
         // pour chaque drone
         for (Drone d : drones) {
-            System.out.println("poids dans le drone avant remplissage: "+d.poidsTotal()+" id drone "+d.id);
+            System.out.println("poids dans le drone avant remplissage: " + d.poidsTotal() + " id drone " + d.id);
 
-            for (int i=0;i<ordersList.size();i++) {
-                if(i==ordersList.size()-1) {
-                    System.out.println(i+" JE SUIS LA MON PELOOOOOOOOOO");
+            for (int i = 0; i < ordersList.size(); i++) {
+                if (i == ordersList.size() - 1) {
+                    System.out.println(i + " JE SUIS LA MON PELOOOOOOOOOO");
                 }
-                if(ordersList.get(i).poidsTotal()==0){
-                    System.out.println("id commande terminee: "+ordersList.get(i).id);
-                }
-                else{
+                if (ordersList.get(i).poidsTotal() == 0) {
+                    System.out.println("id commande terminee: " + ordersList.get(i).id);
+                } else {
                     // pour chaque commande : regarder si poids total inférieur capacité drone
                     for (Map.Entry<Integer, Integer> pair : ordersList.get(i).itemsList.entrySet()) {
                         poids = poids + pair.getValue();
-                        if(poids>d.capacite){
-                            poids=poids-pair.getValue();
+                        if (poids > d.capacite) {
+                            poids = poids - pair.getValue();
                         }
                         // si objet est dans l'entrepot courant, charger drone
-                        else if(poids<=d.capacite-d.poidsTotal()){
-                            if(w.inventaire.get(pair.getKey())!=0){
+                        else if (poids <= d.capacite - d.poidsTotal()) {
+                            if (w.inventaire.get(pair.getKey()) != 0) {
                                 d.addProduct(pair.getKey(), pair.getValue());
                                 pair.setValue(0);
                             }
                         }
                     }
                     // output
-                    if (d.capacite-d.poidsTotal() >= poids) {
-                        /*ordersList.get(i).itemsList.forEach((k, v) -> {
-                            d.addProduct(k, v);
-                        });*/
+                    if (d.capacite - d.poidsTotal() >= poids) {
+                        /*
+                         * ordersList.get(i).itemsList.forEach((k, v) -> {
+                         * d.addProduct(k, v);
+                         * });
+                         */
                         d.x = w.x;
                         d.y = w.y;
-                        System.out.println("Capacite du drone: "+d.capacite+" Poids de l'inventaire du drone: "+poids+ " Poids de la commande: " + ordersList.get(i).poidsTotal() +" ID du drone: "+d.id+" ID de la commande: "+ordersList.get(i).id);
+                        System.out.println("Capacite du drone: " + d.capacite + " Poids de l'inventaire du drone: "
+                                + poids + " Poids de la commande: " + ordersList.get(i).poidsTotal() + " ID du drone: "
+                                + d.id + " ID de la commande: " + ordersList.get(i).id);
                         for (Map.Entry<Integer, Integer> pair : ordersList.get(i).itemsList.entrySet()) {
                             int n = pair.getKey();
                             int amount = pair.getValue() / productsBindweight.get(n);
                             dechargeEntrepot(w, n, amount);
                             rep = rep + d.id + " L " + w.id + " " + n + " " + amount + '\n';
-                        } 
-                    }
-                    poids=0;
-                    /*HashMap<Integer,Integer> nItems=new HashMap<>();
-                    for(Map.Entry<Integer, Integer> nPair : ordersList.get(i).itemsList.entrySet()){
-                        if(nPair.getValue()!=0){
-                            nItems.put(nPair.getKey(), nPair.getValue());
                         }
                     }
-                    Order order=new Order(ordersList.get(i).x, ordersList.get(i).y, ordersList.get(i).nbrItems-1, nItems);
-                    ordersList.add(order);
-                    ordersList.remove(i);*/
-                    
+                    poids = 0;
+                    /*
+                     * HashMap<Integer,Integer> nItems=new HashMap<>();
+                     * for(Map.Entry<Integer, Integer> nPair :
+                     * ordersList.get(i).itemsList.entrySet()){
+                     * if(nPair.getValue()!=0){
+                     * nItems.put(nPair.getKey(), nPair.getValue());
+                     * }
+                     * }
+                     * Order order=new Order(ordersList.get(i).x, ordersList.get(i).y,
+                     * ordersList.get(i).nbrItems-1, nItems);
+                     * ordersList.add(order);
+                     * ordersList.remove(i);
+                     */
+
                 }
             }
-            System.out.println("poids dans le drone apres remplissage: "+d.poidsTotal()+" id drone "+d.id);
+            System.out.println("poids dans le drone apres remplissage: " + d.poidsTotal() + " id drone " + d.id);
         }
         return rep;
     }
 
     public static int shifting(int x, int y, int prevShift, Drone drone) {
-        if(drone.x < x && drone.y < y) {
-            drone.x+=1;
-            drone.y+=1;
-            return shifting(x, y, prevShift+(int)Math.sqrt(2), drone);
+        if (drone.x < x && drone.y < y) {
+            drone.x += 1;
+            drone.y += 1;
+            return shifting(x, y, prevShift + (int) Math.sqrt(2), drone);
         }
-        if(drone.x > x && drone.y > y) {
-            drone.x-=1;
-            drone.y-=1;
-            return shifting(x, y, prevShift+(int)Math.sqrt(2), drone);
+        if (drone.x > x && drone.y > y) {
+            drone.x -= 1;
+            drone.y -= 1;
+            return shifting(x, y, prevShift + (int) Math.sqrt(2), drone);
         }
         if (drone.x < x && drone.y == y) {
-            drone.x+=1;
-            return shifting(x, y, prevShift+1, drone);
+            drone.x += 1;
+            return shifting(x, y, prevShift + 1, drone);
         }
         if (drone.x > x && drone.y == y) {
-            drone.x-=1;
-            return shifting(x, y, prevShift+1, drone);
+            drone.x -= 1;
+            return shifting(x, y, prevShift + 1, drone);
         }
         if (drone.x == x && drone.y < y) {
-            drone.y+=1;
-            return shifting(x, y, prevShift+1, drone);
+            drone.y += 1;
+            return shifting(x, y, prevShift + 1, drone);
         }
         if (drone.x == x && drone.y > y) {
-            drone.y-=1;
-            return shifting(x, y, prevShift+1, drone);
+            drone.y -= 1;
+            return shifting(x, y, prevShift + 1, drone);
         }
         return prevShift;
     }
@@ -295,7 +305,7 @@ public class Main {
                 int n = pair.getKey();
                 int amount = pair.getValue() / productsBindweight.get(n);
                 dechargeDrone(d, n, amount);
-                rep = rep + droneID.toString() + " D " + orderID.toString() + " " + n + " " + amount + '\n' ;
+                rep = rep + droneID.toString() + " D " + orderID.toString() + " " + n + " " + amount + '\n';
             }
             return rep;
         }
@@ -312,7 +322,7 @@ public class Main {
         for (int i = 0; i < amount; i++) {
             if (e.inventaire.get(produit) >= amount) {
                 e.inventaire.put(produit, e.inventaire.get(produit) - productsBindweight.get(produit));
-            } 
+            }
         }
     }
 
@@ -327,26 +337,23 @@ public class Main {
 
     // écriture du résultat dans un fichier res.out
     private static void writeOutput(String res) {
-		try {
-			System.out.println("Debut ecriture resultat");
-			File outputfile = new File("res.out");
-			outputfile.createNewFile();
+        try {
+            System.out.println("Debut ecriture resultat");
+            File outputfile = new File("res.out");
+            outputfile.createNewFile();
 
-			FileWriter fw = new FileWriter(outputfile.getAbsoluteFile());
-			BufferedWriter bw = new BufferedWriter(fw);
+            FileWriter fw = new FileWriter(outputfile.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
 
             bw.write(res);
 
-			bw.close();
-			System.out.println("Fin ecriture resultat");
+            bw.close();
+            System.out.println("Fin ecriture resultat");
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-    
-
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private static Entrepot closestWarehouse(Drone d, Order o) {
         Entrepot e = warehouses.get(0);
@@ -383,21 +390,32 @@ public class Main {
         WtoD = poidsTrajet(o.x, o.y, pres.x, pres.y);
         return dToW + WtoD;
     }
-    
-    private static Order closestOrder(Entrepot w){
+
+    private static Order closestOrder(Entrepot w) {
         Order o = ordersList.get(0);
         int bestDist = -1;
-        for(int i=0;i<ordersList.size();i++){
-            int distance = poidsTrajet(w.x,w.y,ordersList.get(i).x,ordersList.get(i).y);
-            if(bestDist==-1 || bestDist>distance){
+        for (int i = 0; i < ordersList.size(); i++) {
+            int distance = poidsTrajet(w.x, w.y, ordersList.get(i).x, ordersList.get(i).y);
+            if (bestDist == -1 || bestDist > distance) {
                 o = ordersList.get(i);
-                bestDist=distance;
+                bestDist = distance;
             }
         }
 
         return o;
     }
 
+    public static void trierCommandes() {
+        HashMap<Integer, Order> orders = new HashMap<Integer, Order>();
+        ArrayList<Integer> poids = new ArrayList<Integer>();
+        for (int i = 0; i < ordersList.size(); i++) {
+            orders.put(ordersList.get(i).poidsTotal(), ordersList.get(i));
+            poids.add(ordersList.get(i).poidsTotal());
+        }
+        for (int i = 0; i < poids.size(); i++) {
+            sortedOrders.add(orders.get(poids.get(i)));
+        }
+    }
 
     public static void main(String[] args) {
 
