@@ -186,11 +186,6 @@ public class Main {
                         drone.entrepot.removeProduct(pair.getKey(), pair.getValue());
                     } else {
                         redirectDrone(drone, ordersList.get(i));
-                        /*
-                         * if (loadDrone(drone, a++) >= warehouses.size()) {
-                         * return a;
-                         * }
-                         */
                     }
                 }
             }
@@ -233,11 +228,6 @@ public class Main {
                     }
                     // output
                     if (d.capacite - d.poidsTotal() >= poids) {
-                        /*
-                         * ordersList.get(i).itemsList.forEach((k, v) -> {
-                         * d.addProduct(k, v);
-                         * });
-                         */
                         d.x = w.x;
                         d.y = w.y;
                         System.out.println("Capacite du drone: " + d.capacite + " Poids de l'inventaire du drone: "
@@ -251,20 +241,6 @@ public class Main {
                         }
                     }
                     poids = 0;
-                    /*
-                     * HashMap<Integer,Integer> nItems=new HashMap<>();
-                     * for(Map.Entry<Integer, Integer> nPair :
-                     * ordersList.get(i).itemsList.entrySet()){
-                     * if(nPair.getValue()!=0){
-                     * nItems.put(nPair.getKey(), nPair.getValue());
-                     * }
-                     * }
-                     * Order order=new Order(ordersList.get(i).x, ordersList.get(i).y,
-                     * ordersList.get(i).nbrItems-1, nItems);
-                     * ordersList.add(order);
-                     * ordersList.remove(i);
-                     */
-
                 }
             }
             System.out.println("poids dans le drone apres remplissage: " + d.poidsTotal() + " id drone " + d.id);
@@ -424,7 +400,6 @@ public class Main {
         for (int i = 0; i < ordersList.size(); i++) {
             boolean h = false;
             int nbrIt = 0;
-            // Iterator keyIterator = ordersList.get(i).itemsList.keySet().iterator();
             List<Integer> orders = new ArrayList<Integer>(ordersList.get(i).itemsList.keySet());
             for (int j = 0; j < orders.size(); j++) {
                 if (d.inventaire.containsKey(orders.get(j)) && d.inventaire.get(orders.get(j)) > 0) {
@@ -451,7 +426,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        parsing("inputs/example.in");
+        parsing(args[0]);
         trierCommandes();
         String output = "";
         loadDroneInit(warehouses.get(0));
