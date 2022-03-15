@@ -23,10 +23,6 @@ public class Main {
         printMatrix();
 	}
 
-	public static void pcc() {
-		
-	}
-
     private static void parsing(String path) {
         // ouverture du fichier passé en argument
         File f = new File(path);
@@ -65,7 +61,7 @@ public class Main {
         int total = 0;
         for(int i=0;i<joueursEquipes.length;i++) {
             int poidsJoueur = 0;
-            for(int j=i;j<joueursEquipes.length;j++) {
+            for(int j=i+1;j<joueursEquipes.length;j++) {
                 poidsJoueur += distanceFromArbitre[j] + distanceToArbitre[j];
             }
             total += poidsJoueur;
