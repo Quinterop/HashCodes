@@ -229,6 +229,10 @@ public class Main {
                                 d.addProduct(pair.getKey(), pair.getValue());
                                 pair.setValue(0);
                             }
+                            else{
+                                redirectDrone(d,ordersList.get(i));
+                                loadDrone(d,0);
+                            }
                         }
                     }
                     // output
