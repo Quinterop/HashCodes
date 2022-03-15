@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -16,7 +17,8 @@ public class Main {
     private static List<int[]> ficLines = new LinkedList<>();
 
 	public static void main(String args[]) {
-			
+        parsing(args[0]);
+        printMatrix();
 	}
 
 	public static void pcc() {
@@ -45,18 +47,28 @@ public class Main {
 
         for (int i = 0 ; i <ficLines.size() ; i++) {
             if (i == 0) {
-                for (int j = 0 ; j < ficLines.get(i).length ; i++) {
-                    nbrVertex = ficLines.get(i)[0];
-                    nbrPlayers = ficLines.get(i)[1];
-                    nbrParty = ficLines.get(i)[2];
-                    nbrEdges = ficLines.get(i)[3];
-                }
+                nbrVertex = ficLines.get(i)[0];
+                nbrPlayers = ficLines.get(i)[1];
+                nbrParty = ficLines.get(i)[2];
+                nbrEdges = ficLines.get(i)[3];
+                matrix = new int[nbrVertex][nbrVertex];
+                continue;
             }
-            
+            matrix[ficLines.get(i)[0]-1][ficLines.get(i)[1]-1] = ficLines.get(i)[2];
         }
     }
     // Pour convertir la chaine de caractère en tableau
     public static String[] split_on_char(String line) {
         return line.split(" ");
+    }
+
+    public static void printMatrix() {
+        for (int i = 0 ; i < matrix.length ; i++) {
+            System.out.print("[");
+            for (int j = 0 ; j < matrix.length ; j++) {
+                System.out.print(matrix[i][j] + ", ");
+            }
+            System.out.println("]");
+        }
     }
 }
