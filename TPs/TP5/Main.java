@@ -97,12 +97,12 @@ public class Main {
 
     public static int[] dijkstra(int[][] matrice, int arbitre){
         boolean isfinished=false;
-        int [] P=new int[matrice.length];
-        for(int i=0;i<matrice[1].length;i++){
+        int [] P=new int[matrice.length-1];
+        for(int i=0;i<matrice[1].length-1;i++){
             P[i]=-1;
         }
         while(!isfinished){
-            for(int i=0;i<matrice[1].length;i++){
+            for(int i=0;i<matrice[1].length-1;i++){
                 P[i]=distance(matrice, i, arbitre);
             }
             isfinished=isNotFinished(P);
@@ -120,27 +120,23 @@ public class Main {
     }
 
     public static int distance(int[][] matrice,int position,int arbitre){
-        int t=100000000;
+        int t=1000000000;
         int tmp=0;
         int stockage_position_x=0;
         int i=0;
         while(i<arbitre){
-            System.out.println("position x: "+position+" position y: "+i+" valeur: "+matrice[i][position]);
             if(t>matrice[i][position] && position!=i && matrice[i][position]>-1){
                 t=matrice[i][position];
                 stockage_position_x=i;
-                System.out.println(stockage_position_x);
             }
-            if(i==4){
+            if(i==arbitre-1){
                 tmp+=t;
-                //System.out.println(stockage_position_x+"aaaaa"+position);
                 if(stockage_position_x!=arbitre-1){
                     position=stockage_position_x;
-                    i=0;
-                    continue;
+                    t=1000000000;
+                    i=-1;
                 }
             }
-            //System.out.println(tmp);
             i++;
         }
         return tmp;
