@@ -62,7 +62,7 @@ public class Main {
         }
     }
 
-//retourne le poids total de toutes les communications au sein d'une équipe
+    //retourne le poids total de toutes les communications au sein d'une équipe
     public int poidsEquipe(int joueursEquipes[]) {
         int total = 0;
         for(int i=0;i<joueursEquipes.length;i++) {
@@ -95,44 +95,54 @@ public class Main {
         }
     }
 
+    //Renvoie le tableau contenant le plus petit chemin reliant chaque sommet à l'arbitre
     public static int[] dijkstra(int[][] matrice, int arbitre){
-        boolean isfinished=false;
+        //boolean isfinished=false;
         int [] P=new int[matrice.length-1];
         for(int i=0;i<matrice[1].length-1;i++){
             P[i]=-1;
         }
-        while(!isfinished){
+        //while(!isfinished){
             for(int i=0;i<matrice[1].length-1;i++){
                 P[i]=distance(matrice, i, arbitre);
             }
-            isfinished=isNotFinished(P);
-        }
+            //isfinished=isNotFinished(P);
+       // }
         return P;
     }
 
-    public static boolean isNotFinished(int[] t){
+    //Détermine si le tableau de réponse à bien été rempli (cette fonction n'est pas nécéssaire)
+    /*public static boolean isNotFinished(int[] t){
         for(int i=0;i<t.length;i++){
             if(t[i]==-1){
                 return false;
             }
         }
         return true;
-    }
+    }*/
 
-    public static int distance(int[][] matrice,int position,int arbitre){
+
+    //Calcule la distance de tous les points par rapport à départ
+    public static int distance(int[][] matrice,int position,int depart){
         int t=1000000000;
         int tmp=0;
         int stockage_position_x=0;
         int i=0;
-        while(i<arbitre){
-            if(t>matrice[i][position] && position!=i && matrice[i][position]>-1){
+        while(i<depart){
+            //Si l'arc à la position (i;position) est différent de -1 et a un poids plus petit
+            //que le dernier arc plus petit qui a été trouvé, on stocke la valeur de l'arc et la valeur de i
+            if(t>matrice[i][position] && matrice[i][position]>-1){
                 t=matrice[i][position];
                 stockage_position_x=i;
             }
-            if(i==arbitre-1){
+            //Si on a parcouru l'entièreté de la hauteur de la matrice, on incrémente tmp de la valeur du plus petit arc trouvé
+            if(i==depart-1){
                 tmp+=t;
-                if(stockage_position_x!=arbitre-1){
+                //Si l'arc le plus petit trouvé n'est pas dirigé vers le point de départ on continue la recherche du plus petit arc
+                //partant du sommet qu'on vient de trouver
+                if(stockage_position_x!=depart-1){
                     position=stockage_position_x;
+                    //On reset t et i pour la recherche du nouveau plus petit arc
                     t=1000000000;
                     i=-1;
                 }
@@ -142,6 +152,8 @@ public class Main {
         return tmp;
     }
 
+
+    //Remplit la matrice avec de -1 afin de savoir quels arcs n'existent pas pour Dijkstra
     public static void initMatrix(int[][] matrice){
         for(int i=0;i<matrice.length;i++){
             for(int j=0;j<matrice[i].length;j++){
