@@ -120,16 +120,27 @@ public class Main {
     }
 
     public static int distance(int[][] matrice,int position,int arbitre){
-        int t=matrice[1][position];
+        int t=100000000;
         int tmp=0;
+        int stockage_position_x=0;
         int i=0;
-        while(i!=arbitre){
+        while(i<arbitre){
+            System.out.println("position x: "+position+" position y: "+i+" valeur: "+matrice[i][position]);
             if(t>matrice[i][position] && position!=i && matrice[i][position]>-1){
                 t=matrice[i][position];
-                position=i;
-                i=0;
-                tmp+=t;
+                stockage_position_x=i;
+                System.out.println(stockage_position_x);
             }
+            if(i==4){
+                tmp+=t;
+                //System.out.println(stockage_position_x+"aaaaa"+position);
+                if(stockage_position_x!=arbitre-1){
+                    position=stockage_position_x;
+                    i=0;
+                    continue;
+                }
+            }
+            //System.out.println(tmp);
             i++;
         }
         return tmp;
