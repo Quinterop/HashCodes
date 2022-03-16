@@ -55,6 +55,7 @@ public class Main {
                 nbrParty = ficLines.get(i)[2];
                 nbrEdges = ficLines.get(i)[3];
                 matrix = new int[nbrVertex][nbrVertex];
+                initMatrix(matrix);
                 continue;
             }
             matrix[ficLines.get(i)[0]-1][ficLines.get(i)[1]-1] = ficLines.get(i)[2];
@@ -83,7 +84,12 @@ public class Main {
         for (int i = 0 ; i < matrix.length ; i++) {
             System.out.print("[");
             for (int j = 0 ; j < matrix.length ; j++) {
-                System.out.print(matrix[i][j] + ", ");
+                if(matrix[i][j]>-1){
+                    System.out.print(" "+matrix[i][j] + ", ");
+                }
+                else{
+                    System.out.print(matrix[i][j] + ", ");
+                }
             }
             System.out.println("]");
         }
@@ -118,7 +124,7 @@ public class Main {
         int tmp=0;
         int i=0;
         while(i!=arbitre){
-            if(t>matrice[i][position] && position!=i){
+            if(t>matrice[i][position] && position!=i && matrice[i][position]>-1){
                 t=matrice[i][position];
                 position=i;
                 i=0;
@@ -128,4 +134,13 @@ public class Main {
         }
         return tmp;
     }
+
+    public static void initMatrix(int[][] matrice){
+        for(int i=0;i<matrice.length;i++){
+            for(int j=0;j<matrice[i].length;j++){
+                matrice[i][j]=-1;
+            }
+        }
+    }
+
 }
