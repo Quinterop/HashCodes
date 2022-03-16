@@ -21,6 +21,11 @@ public class Main {
 	public static void main(String args[]) {
         parsing(args[0]);
         printMatrix();
+        int[] res=dijkstra(matrix, 5);
+        for(int i=0;i<res.length;i++){
+            System.out.print(res[i]+" ");
+        }
+        System.out.println();
 	}
 
     private static void parsing(String path) {
@@ -85,43 +90,42 @@ public class Main {
     }
 
     public static int[] dijkstra(int[][] matrice, int arbitre){
-        int [] P;
+        boolean isfinished=false;
+        int [] P=new int[matrice.length];
         for(int i=0;i<matrice[1].length;i++){
             P[i]=-1;
         }
-        while(!isFinished(P)){
+        while(!isfinished){
             for(int i=0;i<matrice[1].length;i++){
-                if(P[i]!=-1){
-                    P[i]=distance(matrice, i, arbitre);
-                }
+                P[i]=distance(matrice, i, arbitre);
             }
+            isfinished=isNotFinished(P);
         }
-
         return P;
     }
 
-    public static boolean isFinished(ArrayList<Integer> t){
-        for(int i=0;i<t.size();i++){
-            if(t.get(i)==-1){
+    public static boolean isNotFinished(int[] t){
+        for(int i=0;i<t.length;i++){
+            if(t[i]==-1){
                 return false;
             }
         }
         return true;
     }
 
-    public static int distance(matrice[][] matrice,int position,int arbitre){
+    public static int distance(int[][] matrice,int position,int arbitre){
         int t=matrice[1][position];
         int tmp=0;
         int i=0;
-        while(i!=arbitre){ 
-            if(t>matrice[i][position]){
+        while(i!=arbitre){
+            if(t>matrice[i][position] && position!=i){
                 t=matrice[i][position];
                 position=i;
                 i=0;
+                tmp+=t;
             }
-            tmp+=t;
             i++;
         }
-        
+        return tmp;
     }
 }
