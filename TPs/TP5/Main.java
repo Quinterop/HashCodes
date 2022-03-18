@@ -3,7 +3,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -116,6 +116,16 @@ public class Main {
 		}
 		return total;
 	}
+
+	public static int poidsEquipe2(Integer joueursEquipes[]) {
+		int total = 0;
+		for(int i=0;i<joueursEquipes.length;i++) {
+			total += distanceToArbitre[joueursEquipes[i]] + distanceFromArbitre[joueursEquipes[i]];
+		}
+		return total;
+	}
+
+
 
 	// Pour convertir la chaine de caractère en tableau
 	public static String[] split_on_char(String line) {
@@ -319,4 +329,70 @@ public class Main {
         return dist;
     }
 
+		public static int worstTeam() {
+        int from = 0;
+        int to = 0;
+        for (int i = 0; i < distanceToArbitre.length; i++) {
+            if (distanceToArbitre[i] > to)
+                to = i;
+            if (distanceFromArbitre[i] > from)
+                from = i;
+        }
+        int[] t = { to, from };
+        return poidsEquipe(t);
+    }
+
+	public static int bestWorstTeam(){
+		int from = 0;
+        int to = Integer.MAX_VALUE;
+        for (int i = 0; i < distanceToArbitre.length; i++) {
+            if (distanceToArbitre[i] < to)
+                to = i;
+            if (distanceFromArbitre[i] > from)
+                from = i;
+        }
+        int[] t = { to, from };
+        return poidsEquipe(t);
+	}
+
+    public Integer[][] makeTeam(int distance) {
+		Integer[][] teams = new Integer[nbrParty][];
+		int pointerFrom = 0;
+		int pointerTo = 0;
+		int minPlayersLeft = nbrParty*2;
+		int worst = worstTeam();
+
+        for (int i = 0; i < nbrParty; i++) {
+			int poids;
+			ArrayList<Integer> team = new ArrayList<Integer>();
+			team.add(distanceToArbitre[pointerTo]);
+			team.add(distanceFromArbitre[pointerFrom]);
+			pointerFrom ++;
+			pointerTo ++;
+			Integer[] newTeam = new Integer[team.size()];
+
+			newTeam = team.toArray(newTeam);
+				
+			poids = poidsEquipe2(newTeam);
+
+			while(poids<worst){
+
+				if(minPlayersLeft<0)
+					break;
+
+            	if(distanceToArbitre[pointerTo]<distanceFromArbitre[pointerFrom]){
+					team.add(distanceToArbitre[pointerTo]);
+					pointerTo++;
+				}else{
+					team.add(distanceFromArbitre[pointerFrom]);
+					pointerFrom++;
+				}
+				newTeam = new Integer[team.size()];
+				newTeam = team.toArray(newTeam);				
+				poids = poidsEquipe2(newTeam);
+			}
+			teams[i] = newTeam;
+        }
+		return teams;
+    }
 }
