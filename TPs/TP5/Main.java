@@ -32,12 +32,14 @@ public class Main {
         writeOutput(res); */
 		
         distanceFromArbitre = dijkstra(matrix, nbrPlayers);
-        distanceToArbitre = dijkstra(reverseGraph(matrix),nbrPlayers);
+        /*distanceToArbitre = dijkstra(reverseGraph(matrix),nbrPlayers);
         int[][] timz = createTeams();
         int total = 0;
         for(int i=0;i<timz.length;i++)
         	total += poidsEquipe(timz[i]);
-        System.out.println(total);
+        System.out.println(total);*/
+        int[] p=dijkstra2(matrix, nbrPlayers+1);
+        printArray(p);
 	}
 
 	private static void parsing(String path) {
@@ -67,7 +69,7 @@ public class Main {
 				nbrParty = ficLines.get(i)[2];
 				nbrEdges = ficLines.get(i)[3];
 				matrix = new int[nbrVertex][nbrVertex];
-				//initMatrix(matrix);
+				initMatrix(matrix);
 				continue;
 			}
 			matrix[ficLines.get(i)[0]-1][ficLines.get(i)[1]-1] = ficLines.get(i)[2];
@@ -169,46 +171,63 @@ public class Main {
             }
         }
 
+    static void printArray(int [] p){
+        System.out.print("[");
+        for(int i=0;i<p.length-1;i++){
+            System.out.print(p[i]+";");
+        }
+        System.out.println(p[p.length-1]+"]");
+    }
 
 	/// ----------------- DEBUT VERSION1 ----------------
 
 	//Renvoie le tableau contenant le plus petit chemin reliant chaque sommet à l'arbitre
 	public static int[] dijkstra2(int[][] matrice, int arbitre){
-		//boolean isfinished=false;
 		int [] P=new int[matrice.length-1];
 		for(int i=0;i<matrice[1].length-1;i++){
 			P[i]=-1;
 		}
-		//while(!isfinished){
-		for(int i=0;i<matrice[1].length-1;i++){
-			P[i]=distance(matrice, i, arbitre);
-		}
-		//isfinished=isNotFinished(P);
-		// }
+        int i=0;
+        while(i<matrice.length-1){
+            if(i!=arbitre-1){
+			    P[i]=distance(matrice, i, arbitre);
+            }
+            else{
+                for(int j=i;j<matrice.length-1;j++){
+                    P[j]=distance(matrice, j+1,arbitre);
+                    i=matrice.length;
+                }
+            }
+            i++;
+        }
 		return P;
 	}
 
 	//Calcule la distance de tous les points par rapport à départ
-	public static int distance(int[][] matrice,int position,int depart){
+	
+    public static int distance(int[][] matrice,int position,int depart){
 		int t=1000000000;
 		int tmp=0;
 		int stockage_position_x=0;
 		int i=0;
-		while(i<depart){
+		while(i<matrice.length){
 			//Si l'arc à la position (i;position) est différent de -1 et a un poids plus petit
 			//que le dernier arc plus petit qui a été trouvé, on stocke la valeur de l'arc et la valeur de i
-			if(t>matrice[i][position] && matrice[i][position]>-1){
-				t=matrice[i][position];
+			
+            if(matrice[position][i]>-1 && t>=matrice[position][i]){
+				t=matrice[position][i];
 				stockage_position_x=i;
 			}
 			//Si on a parcouru l'entièreté de la hauteur de la matrice, on incrémente tmp de la valeur du plus petit arc trouvé
-			if(i==depart-1){
+            if(i==matrice.length-1){
 				tmp+=t;
-				//Si l'arc le plus petit trouvé n'est pas dirigé vers le point de départ on continue la recherche du plus petit arc
+				
+                //Si l'arc le plus petit trouvé n'est pas dirigé vers le point de départ on continue la recherche du plus petit arc
 				//partant du sommet qu'on vient de trouver
-				if(stockage_position_x!=depart-1){
+				if(stockage_position_x!=nbrPlayers){
 					position=stockage_position_x;
-					//On reset t et i pour la recherche du nouveau plus petit arc
+                    
+                    //On reset t et i pour la recherche du nouveau plus petit arc
 					t=1000000000;
 					i=-1;
 				}
