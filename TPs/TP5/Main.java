@@ -1,5 +1,8 @@
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,12 +23,13 @@ public class Main {
 
 	public static void main(String args[]) {
 		parsing(args[0]);
-		printMatrix();
+		//printMatrix();
 		int[] res=dijkstra(matrix, nbrPlayers+1);
 		for(int i=0;i<res.length;i++){
 			System.out.print(res[i]+" ");
 		}
 		System.out.println();
+        writeOutput(res);
 	}
 
 	private static void parsing(String path) {
@@ -94,6 +98,30 @@ public class Main {
 			System.out.println("]");
 		}
 	}
+
+        // écriture du résultat dans un fichier res.out
+        private static void writeOutput(int res[]) {
+            try {
+                System.out.println("Debut ecriture resultat");
+                File outputfile = new File("res.out");
+                outputfile.createNewFile();
+    
+                FileWriter fw = new FileWriter(outputfile.getAbsoluteFile());
+                BufferedWriter bw = new BufferedWriter(fw);
+    
+                //bw.write(res);
+                
+                for(int i=0;i<res.length;i++){
+                    bw.write(res[i]+" ");
+                }
+
+                bw.close();
+                System.out.println("Fin ecriture resultat");
+    
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
 	//Renvoie le tableau contenant le plus petit chemin reliant chaque sommet à l'arbitre
 	public static int[] dijkstra(int[][] matrice, int arbitre){
