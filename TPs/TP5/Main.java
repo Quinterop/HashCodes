@@ -15,8 +15,8 @@ public class Main {
 	private static int nbrPlayers = 0;
 	private static int nbrParty = 0;
 	private static int[][] matrix;
-	int[] distanceFromArbitre;     //taille joeuurs
-	int[] distanceToArbitre;  
+	static int[] distanceFromArbitre;     //taille joeuurs
+	static int[] distanceToArbitre;  
 
 	// Liste de toutes les lignes
 	private static List<int[]> ficLines = new LinkedList<>();
@@ -69,14 +69,10 @@ public class Main {
 	}
 
 	//retourne le poids total de toutes les communications au sein d'une équipe
-	public int poidsEquipe(int joueursEquipes[]) {
+	public static int poidsEquipe(int joueursEquipes[]) {
 		int total = 0;
 		for(int i=0;i<joueursEquipes.length;i++) {
-			int poidsJoueur = 0;
-			for(int j=i+1;j<joueursEquipes.length;j++) {
-				poidsJoueur += distanceFromArbitre[joueursEquipes[j]] + distanceToArbitre[joueursEquipes[i]];
-			}
-			total += poidsJoueur;
+			total += distanceToArbitre[i] + distanceFromArbitre[i];
 		}
 		return total;
 	}
