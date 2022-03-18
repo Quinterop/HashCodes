@@ -72,7 +72,7 @@ public class Main {
 	public static int poidsEquipe(int joueursEquipes[]) {
 		int total = 0;
 		for(int i=0;i<joueursEquipes.length;i++) {
-			total += distanceToArbitre[i] + distanceFromArbitre[i];
+			total += distanceToArbitre[joueursEquipes[i]] + distanceFromArbitre[joueursEquipes[i]];
 		}
 		return total;
 	}
