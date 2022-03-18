@@ -31,7 +31,13 @@ public class Main {
 		System.out.println();
         writeOutput(res); */
 		
-        dijkstra(matrix, nbrPlayers);
+        distanceFromArbitre = dijkstra(matrix, nbrPlayers);
+        distanceToArbitre = dijkstra(reverseGraph(matrix),nbrPlayers);
+        int[][] timz = createTeams();
+        int total = 0;
+        for(int i=0;i<timz.length;i++)
+        	total += poidsEquipe(timz[i]);
+        System.out.println(total);
 	}
 
 	private static void parsing(String path) {
@@ -66,6 +72,38 @@ public class Main {
 			}
 			matrix[ficLines.get(i)[0]-1][ficLines.get(i)[1]-1] = ficLines.get(i)[2];
 		}
+	}
+
+	public static int[][] createTeams() {
+		int[][] teams = new int[nbrParty][];
+
+		int playersPerTeam = nbrPlayers / nbrParty;
+
+		int dernierJoueur = 0;
+		int id = 0;
+
+		//System.out.println("nbr equipes : " + nbrParty);
+
+		for(int i=0;i<teams.length;i++) {
+			
+			if(i == teams.length -1) {
+				int rest = nbrPlayers - playersPerTeam*(nbrParty-1);
+				teams[i] = new int[rest];
+				for (int j = 0 ; j < rest ; j++) {
+					teams[i][j] = id;
+					id++;
+				}
+				continue;
+			}
+			
+			teams[i] = new int[playersPerTeam];
+			for (int j = 0 ; j<playersPerTeam ; j++) {
+				teams[i][j] = id;
+				id ++;
+			}
+		}
+
+		return teams;
 	}
 
 	//retourne le poids total de toutes les communications au sein d'une équipe
@@ -219,7 +257,7 @@ public class Main {
     // Function that implements Dijkstra's single source shortest path
     // algorithm for a graph represented using adjacency matrix
     // representation
-    private static void dijkstra(int graph[][], int src)
+    private static int[] dijkstra(int graph[][], int src)
     {
         int dist[] = new int[matrix.length]; // The output array. dist[i] will hold
         // the shortest distance from src to i
@@ -259,7 +297,7 @@ public class Main {
         }
  
         // print the constructed distance array
-        printSolution(dist);
+        return dist;
     }
 
 }
