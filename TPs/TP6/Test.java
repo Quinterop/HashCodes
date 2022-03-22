@@ -11,7 +11,9 @@ public class Test{
     static int notes[];
     static int nombreNotes = 0;
     static int longueurInit = 0;
-    static int preSequence[] = 0;
+    static int preSequence[];
+    static int si[];
+    static int nbrJouees=0;
 
 
     //Initialise le tableau des fréquences 
@@ -31,9 +33,30 @@ public class Test{
     }
 
 	public static void main(String[] args){
-        System.out.println("Coucou mon pélolohohoh !");
+        parsing(args[0]);
     }
 
+    public static void print(int[] toto){
+        for(int i=0;i<toto.length;i++){
+            System.out.print(toto[i]);
+        }
+        System.out.println("");
+    }
+
+    public static boolean isJouable(int index){
+        return(si[index]<(frequences[index]*nbrJouees)+1 && si[index]>(frequences[index]*nbrJouees)-1);
+    }
+
+    public static float distanceGauche(int index){
+        return(si[index]-frequences[index]*nbrJouees-1);
+    }
+
+    public static float[] decalage(int index){
+        float[] decale=new float[2];
+        decale[0]=(nbrJouees*frequences[index])-1;
+        decale[1]=(nbrJouees*frequences[index])+1;
+        return decale;
+    }
     
     
     private static void parsing(String path) {
@@ -52,28 +75,37 @@ public class Test{
                 if(compteur==0){
                     nombreNotes=intLine[0];
                     longueurInit=intLine[1];
+                    System.out.print(nombreNotes+" "+longueurInit);
+                    System.out.println(" ");
                 }
                 else if(compteur==1){
                     notes=new int[intLine.length];
+                    si=new int[intLine.length];
                     for(int i=0;i<intLine.length;i++){
                         notes[i]=intLine[i];
+                        System.out.print(notes[i]+" ");
                     }
+                    System.out.println("");
+        
                 }
                 else{
                     preSequence=new int[intLine.length];
                     for(int i=0;i<intLine.length;i++){
                         preSequence[i]=intLine[i];
+                        System.out.print(preSequence[i]+" ");
                     }
+                    System.out.println("");
+                    
                 }
+                compteur++;
             } 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
         }
-
 	}
 
     // écriture du résultat dans un fichier res.out
-    private static void writeOutput(int res) {
+    /*private static void writeOutput(int res) {
         try {
             System.out.println("Debut ecriture resultat");
             File outputfile = new File("res.out");
@@ -89,6 +121,6 @@ public class Test{
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
 }
