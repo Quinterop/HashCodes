@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -60,6 +61,21 @@ public class Test{
         return decale;
     }
     
+    public static void start(){
+        ArrayList<Float> liste=new ArrayList<>();
+        for(int i=0;i<notes.length;i++){
+            if(isJouable(i)){
+                liste.add(distanceGauche(i));
+            }
+        }
+    }
+
+    public static void initSI(){
+        for(int i=0;i<preSequence.length;i++){
+            si[preSequence[i]-1]+=1;
+        }
+    }
+
     
     private static void parsing(String path) {
 		// ouverture du fichier passé en argument
@@ -92,6 +108,7 @@ public class Test{
                 }
                 else{
                     preSequence=new int[intLine.length];
+                    nbrJouees=intLine.length;
                     for(int i=0;i<intLine.length;i++){
                         preSequence[i]=intLine[i];
                         System.out.print(preSequence[i]+" ");
@@ -101,6 +118,7 @@ public class Test{
                 }
                 compteur++;
             } 
+            calculFrequences();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
         }
