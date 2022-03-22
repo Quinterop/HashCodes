@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Test{
@@ -14,6 +15,7 @@ public class Test{
     static int preSequence[];
     static int si[];
     static int nbrJouees=0;
+    static LinkedList bufferNotes;
 
 
     //Initialise le tableau des fréquences 
