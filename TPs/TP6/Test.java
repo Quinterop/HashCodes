@@ -11,7 +11,7 @@ public class Test{
     static int notes[];
     static int nombreNotes = 0;
     static int longueurInit = 0;
-    static int preSequence[] = 0;
+    static int preSequence[];
 
 
     //Initialise le tableau des fréquences 
