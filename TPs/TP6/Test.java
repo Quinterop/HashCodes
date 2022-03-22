@@ -15,7 +15,7 @@ public class Test{
     static int preSequence[];
     static int si[];
     static int nbrJouees=0;
-    static LinkedList bufferNotes;
+    static LinkedList<Integer> bufferNotes;
 
 
     //Initialise le tableau des fréquences 
@@ -32,6 +32,23 @@ public class Test{
             tmp+=toto[i];
         }
         return tmp;
+    }
+
+    // A-t-on déjà joué toute la séquence possible ?
+    private static boolean stop() {
+        int currentNote = bufferNotes.get(bufferNotes.size());
+        return bufferNotes.size()*(currentNote / somme(notes)) == getNbrOcc(currentNote);
+    }
+
+    // retourne nombre d'occurence d'une note
+    private static int getNbrOcc(int note) {
+        int occ = 0;
+        for (int i = 0 ; i < bufferNotes.size() ; i++) {
+            if (bufferNotes.get(i) == note) {
+                occ++;
+            }
+        }
+        return occ;
     }
 
 	public static void main(String[] args){
