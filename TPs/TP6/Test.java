@@ -1,8 +1,5 @@
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -51,9 +48,34 @@ public class Test{
         return occ;
     }
 
-	public static void main(String[] args){
+	    public static void main(String[] args){
         parsing(args[0]);
+        calculFrequences();
+        //GERER PRESEQUENCE ?
+        //INITIALISER SI[] ?
+        while(true){
+            if(stop()){
+                System.out.println("INFINI");
+            }
+            int bestNote = -1;
+            float bestGauche = Integer.MAX_VALUE;
+            for(int i=0; i<nombreNotes;i++){
+                
+                if(isJouable(notes[i])){
+                    if(bestNote==-1) bestNote = notes[i];
+                    if(distanceGauche(notes[i])<bestGauche){
+                        bestNote = notes[i];
+                        bestGauche = distanceGauche(notes[i]);
+                    }
+                }
+            }
+            if(bestNote==-1){ System.out.println("BLOQUE");
+        }else{ 
+            System.out.println("Note jouée :"+bestNote);
+            //JOUER LA NOTE
+        }
     }
+}
 
     public static void print(int[] toto){
         for(int i=0;i<toto.length;i++){
