@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+
 public class exo3{
 
     static int ritaBougie;
@@ -34,27 +35,29 @@ public class exo3{
 
 
     public static void main(String[] args) {
-        Parser("data-tp8/Bougies/candle03.in");
+        Parser(args[0]);
+	/*
         System.out.println("DiffAge: " + diffAge);
         System.out.println("TheoBougie: " + theoBougie);
         System.out.println("ritaBougie: " + ritaBougie);
+	*/
 
         int nbBougie = 4;
-        while(ritaBougie>0 && (ritaBougie-nbBougie)>=0){
+        while(ritaBougie>=0 && (ritaBougie-nbBougie)>=0){
             ritaAge++;
             ritaBougie=ritaBougie-nbBougie;
             nbBougie++;
         }
-            System.out.println("RitaAge: " + ritaAge);
+      //      System.out.println("RitaAge: " + ritaAge);
         
         nbBougie = 3;
-        while(theoBougie>0 && (theoBougie-nbBougie)>=0){
+        while(theoBougie>=0 && (theoBougie-nbBougie)>=0){
             theoAge++;
             theoBougie=theoBougie-nbBougie;
             nbBougie++;
         }
-        System.out.println("theoAge: " + theoAge);
+       // System.out.println("theoAge: " + theoAge);
 
-        System.out.println("Rita a " + ritaBougie + " de trop");
+        System.out.println(ritaBougie);
     }
 }
