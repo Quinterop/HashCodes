@@ -22,7 +22,7 @@ public class Test{
     private static void calculFrequences() {
         int moyenne = somme(notes);
         System.out.println(moyenne);
-        for(int i=0;i<frequences.length; i++){
+        for(int i=1;i<frequences.length; i++){
             frequences[i] =(float) notes[i] / moyenne;
             System.out.print(frequences[i]+" ");
         }
@@ -63,18 +63,17 @@ public class Test{
         while(true){
             int bestNote = -1;
             float bestGauche = Integer.MAX_VALUE;
-            for(int i=0; i<nombreNotes-1;i++){    
+            for(int i=1; i<nombreNotes+1;i++){    
                 if(isJouable(i)){
                     if(bestNote == -1) {
-                        bestNote = notes[i];
+                        bestNote = i;
                         bufferNotes.add(bestNote);
                         
                     }
-                    if(distanceGauche(notes[i])<bestGauche) {
-                        bestNote = notes[i];
+                    if(distanceGauche(i)<bestGauche) {
+                        bestNote = i;
                         bestGauche = distanceGauche(i);
                     }
-                    si[i]++;
                 }
             }
             if(bestNote==-1) { 
@@ -83,9 +82,12 @@ public class Test{
             else{ 
                 System.out.println("Note jouee :"+bestNote);
                 //JOUER LA NOTE
+                si[bestNote]++;
+                nbrJouees++;
             }
             if(stop()){
                 System.out.println("INFINI");
+                nbrJouees-=preSequence.length;
                 break;
             }
         }
@@ -93,7 +95,7 @@ public class Test{
     }
 
     public static void print(int[] toto){
-        for(int i=0;i<toto.length;i++){
+        for(int i=1;i<toto.length;i++){
             System.out.print(toto[i]+" ");
         }
         System.out.println("");
@@ -133,11 +135,11 @@ public class Test{
                     System.out.println(" ");
                 }
                 else if(compteur==1){
-                    notes=new int[nombreNotes];
-                    si=new int[intLine.length];
-                    frequences = new float[nombreNotes];
-                    for(int i=0;i<intLine.length;i++){
-                        notes[i]=intLine[i];
+                    notes=new int[nombreNotes+1];
+                    si=new int[nombreNotes+1];
+                    frequences = new float[nombreNotes+1];
+                    for(int i=1;i<notes.length;i++){
+                        notes[i]=intLine[i-1];
                         System.out.print(notes[i]+" ");
                     }
                     System.out.println("");
@@ -145,6 +147,7 @@ public class Test{
                 }
                 else{
                     preSequence=new int[intLine.length];
+                    nbrJouees=preSequence.length;
                     for(int i=0;i<intLine.length;i++){
                         preSequence[i]=intLine[i];
                         System.out.print(preSequence[i]+" ");
@@ -161,7 +164,7 @@ public class Test{
 
     public static void initSi(){
         for(int i=0;i<preSequence.length;i++){
-            si[preSequence[i]-1]++;
+            si[preSequence[i]]++;
         }
     }
 
