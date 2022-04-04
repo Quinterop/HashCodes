@@ -1,5 +1,8 @@
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -12,7 +15,7 @@ public class Test{
     static int preSequence[];
     static int si[];
     static int nbrJouees=0;
-    static LinkedList<Integer> bufferNotes;
+    static LinkedList<Integer> bufferNotes = new LinkedList<>();
 
 
     //Initialise le tableau des fréquences 
@@ -54,26 +57,32 @@ public class Test{
         //GERER PRESEQUENCE ?
         //INITIALISER SI[] ?
         while(true){
-            if(stop()){
-                System.out.println("INFINI");
-            }
             int bestNote = -1;
             float bestGauche = Integer.MAX_VALUE;
             for(int i=0; i<nombreNotes;i++){
                 
                 if(isJouable(notes[i])){
-                    if(bestNote==-1) bestNote = notes[i];
-                    if(distanceGauche(notes[i])<bestGauche){
+                    if(bestNote == -1) {
+                        bestNote = notes[i];
+                        bufferNotes.add(bestNote);
+                    }
+                    if(distanceGauche(notes[i])<bestGauche) {
                         bestNote = notes[i];
                         bestGauche = distanceGauche(notes[i]);
                     }
                 }
             }
-            if(bestNote==-1){ System.out.println("BLOQUE");
-        }else{ 
-            System.out.println("Note jouée :"+bestNote);
-            //JOUER LA NOTE
-        }
+            if(bestNote==-1) { 
+                System.out.println("BLOQUE");
+            }
+            else{ 
+                System.out.println("Note jouée :"+bestNote);
+                //JOUER LA NOTE
+            }
+            if(stop()){
+                System.out.println("INFINI");
+                break;
+            }
     }
 }
 
@@ -103,7 +112,6 @@ public class Test{
     private static void parsing(String path) {
 		// ouverture du fichier passé en argument
 		File f = new File(path);
-        int notes[];
         int compteur=0;
 		// lecture du fichier et ajout de chaque ligne dans l'ArrayList de type String
         try (Scanner sc = new Scanner(f)) {
@@ -122,6 +130,7 @@ public class Test{
                 else if(compteur==1){
                     notes=new int[intLine.length];
                     si=new int[intLine.length];
+                    frequences = new float[intLine.length];
                     for(int i=0;i<intLine.length;i++){
                         notes[i]=intLine[i];
                         System.out.print(notes[i]+" ");
@@ -146,7 +155,7 @@ public class Test{
 	}
 
     // écriture du résultat dans un fichier res.out
-    /*private static void writeOutput(int res) {
+    private static void writeOutput(int res) {
         try {
             System.out.println("Debut ecriture resultat");
             File outputfile = new File("res.out");
@@ -162,6 +171,6 @@ public class Test{
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }*/
+    }
 
 }
