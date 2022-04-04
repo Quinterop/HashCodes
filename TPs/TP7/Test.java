@@ -3,8 +3,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.*;
+
 
 public class Test{
 
@@ -21,9 +21,12 @@ public class Test{
     //Initialise le tableau des fréquences 
     private static void calculFrequences() {
         int moyenne = somme(notes);
+        System.out.println(moyenne);
         for(int i=0;i<frequences.length; i++){
-            frequences[i] = i / moyenne;
+            frequences[i] =(float) notes[i] / moyenne;
+            System.out.print(frequences[i]+" ");
         }
+        System.out.println();
     }
 
     public static int somme(int[] toto){
@@ -51,25 +54,27 @@ public class Test{
         return occ;
     }
 
-	    public static void main(String[] args){
+    public static void main(String[] args){
         parsing(args[0]);
         calculFrequences();
         //GERER PRESEQUENCE ?
         //INITIALISER SI[] ?
+        print(si);
         while(true){
             int bestNote = -1;
             float bestGauche = Integer.MAX_VALUE;
-            for(int i=0; i<nombreNotes-1;i++){
-                
-                if(isJouable(notes[i])){
+            for(int i=0; i<nombreNotes-1;i++){    
+                if(isJouable(i)){
                     if(bestNote == -1) {
                         bestNote = notes[i];
                         bufferNotes.add(bestNote);
+                        
                     }
                     if(distanceGauche(notes[i])<bestGauche) {
                         bestNote = notes[i];
-                        bestGauche = distanceGauche(notes[i]);
+                        bestGauche = distanceGauche(i);
                     }
+                    si[i]++;
                 }
             }
             if(bestNote==-1) { 
@@ -83,12 +88,13 @@ public class Test{
                 System.out.println("INFINI");
                 break;
             }
+        }
+        print(si);
     }
-}
 
     public static void print(int[] toto){
         for(int i=0;i<toto.length;i++){
-            System.out.print(toto[i]);
+            System.out.print(toto[i]+" ");
         }
         System.out.println("");
     }
@@ -107,7 +113,6 @@ public class Test{
         decale[1]=(nbrJouees*frequences[index])+1;
         return decale;
     }
-    
     
     private static void parsing(String path) {
 		// ouverture du fichier passé en argument
@@ -128,9 +133,9 @@ public class Test{
                     System.out.println(" ");
                 }
                 else if(compteur==1){
-                    notes=new int[intLine.length];
+                    notes=new int[nombreNotes];
                     si=new int[intLine.length];
-                    frequences = new float[intLine.length];
+                    frequences = new float[nombreNotes];
                     for(int i=0;i<intLine.length;i++){
                         notes[i]=intLine[i];
                         System.out.print(notes[i]+" ");
@@ -145,7 +150,7 @@ public class Test{
                         System.out.print(preSequence[i]+" ");
                     }
                     System.out.println("");
-                    
+                    initSi();
                 }
                 compteur++;
             } 
@@ -153,6 +158,12 @@ public class Test{
 			e.printStackTrace();
         }
 	}
+
+    public static void initSi(){
+        for(int i=0;i<preSequence.length;i++){
+            si[preSequence[i]-1]++;
+        }
+    }
 
     // écriture du résultat dans un fichier res.out
     private static void writeOutput(int res) {
