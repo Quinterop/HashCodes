@@ -126,37 +126,43 @@ public class Test{
             while (sc.hasNextLine()) {
                 String[] strLine = sc.nextLine().split(" ");
                 int[] intLine = new int[strLine.length];
-                for (int i = 0 ; i < intLine.length ; i++) {
-                    intLine[i] = Integer.parseInt(strLine[i]);
-                }
-                if(compteur==0){
-                    nombreNotes=intLine[0];
-                    longueurInit=intLine[1];
-                    System.out.print(nombreNotes+" "+longueurInit);
-                    System.out.println(" ");
-                }
-                else if(compteur==1){
-                    notes=new int[nombreNotes+1];
-                    si=new int[nombreNotes+1];
-                    frequences = new float[nombreNotes+1];
-                    for(int i=1;i<notes.length;i++){
-                        notes[i]=intLine[i-1];
-                        System.out.print(notes[i]+" ");
+                try {
+                    for (int i = 0 ; i < intLine.length ; i++) {
+                        intLine[i] = Integer.parseInt(strLine[i]);
                     }
-                    System.out.println("");
-        
-                }
-                else{
-                    preSequence=new int[intLine.length];
-                    nbrJouees=preSequence.length;
-                    for(int i=0;i<intLine.length;i++){
-                        preSequence[i]=intLine[i];
-                        System.out.print(preSequence[i]+" ");
+                    if(compteur==0){
+                        nombreNotes=intLine[0];
+                        longueurInit=intLine[1];
+                        System.out.print(nombreNotes+" "+longueurInit);
+                        System.out.println(" ");
                     }
-                    System.out.println("");
-                    initSi();
-                }
-                compteur++;
+                    else if(compteur==1){
+                        notes=new int[nombreNotes+1];
+                        si=new int[nombreNotes+1];
+                        frequences = new float[nombreNotes+1];
+                        for(int i=1;i<notes.length;i++){
+                            notes[i]=intLine[i-1];
+                            System.out.print(notes[i]+" ");
+                        }
+                        System.out.println("");
+            
+                    }
+                    else{
+                        preSequence=new int[intLine.length];
+                        nbrJouees=preSequence.length;
+                        for(int i=0;i<intLine.length;i++){
+                            preSequence[i]=intLine[i];
+                            System.out.print(preSequence[i]+" ");
+                        }
+                        System.out.println("");
+                        initSi();
+                    }
+                    compteur++;
+                } catch (NumberFormatException e) {
+                    System.out.println("Mauvais format de donnees pour : " + path);
+                    System.exit(1);
+                } 
+
             } 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
