@@ -64,6 +64,9 @@ public class Test{
         //GERER PRESEQUENCE ?
         //INITIALISER SI[] ?
         print(si);
+        for(int i=0;i<preSequence.length;i++){
+            bufferNotes.add(preSequence[i]);
+        }
         while(true){
             int bestNote = -1;
             float bestGauche = Integer.MAX_VALUE;
