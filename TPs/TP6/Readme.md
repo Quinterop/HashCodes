@@ -1,10 +1,16 @@
-# Fait
+# TP5
 
-* Détection de la condition d'arrêt (si toute la séquence de notes est parcouru)
-* Vérification si une note peut être jouée
-* Stockage de l'interval des notes jouables
-* choix de la meilleure note à jouer (note gauche)
+## Fait
 
-# A faire
+* parsing du fichier (chemin passé en argument au programme)
+* création d'une matrice d'adjacence modélisant le graphe (liaison et poids entre tous les joueurs)
+* calcul du poids des communications au sein d'une équipe donnée
+* inversion du graphe pour comparer le sommet d'arrivé aux sommets de départ
+* plus courts chemin, 2x (joueurs -> arbitre -> joueurs) (Djikstra)
+* Les équipes sont actuellement constituées le plus équitablement possible, en rangeant les joueurs dans leur ordre d'apparition
 
-* binding de toutes les fonctionalités déjà réalisées
+## En cours
+
+## Problèmes
+
+- Dijkstra retourne des poids négatifs dans certains cas
