@@ -40,12 +40,8 @@ public class Test{
     // A-t-on déjà joué toute la séquence possible ?
     private static boolean stop() {
         int currentNote = bufferNotes.get(bufferNotes.size()-1);
-        int currentNoteOcc = getNbrOcc(currentNote); // si
-
-        return notes[currentNote]-1 == currentNoteOcc && notes[currentNote]+1 == currentNoteOcc;
-
-        //return bufferNotes.size()*(currentNote / somme(notes)) == getNbrOcc(currentNote);
-    }
+        return currentNote == getNbrOcc(currentNote); // ai == si
+}
 
     // retourne nombre d'occurence d'une note
     private static int getNbrOcc(int note) {
@@ -88,7 +84,7 @@ public class Test{
             }
             else{ 
                 System.out.println("Note jouee : " + bestNote);
-                //JOUER LA NOTE
+                 //JOUER LA NOTE
                 si[bestNote]++;
                 nbrJouees++;
                 bufferNotes.add(bestNote);
@@ -195,7 +191,7 @@ public class Test{
             bw.write(res);
             bw.close();
             System.out.println("Fin ecriture resultat");
-
+ 
         } catch (IOException e) {
             e.printStackTrace();
         }
