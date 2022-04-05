@@ -53,6 +53,7 @@ public class Test{
         parsing(args[0]);
         calculFrequences();
         print("Liste occurence par note : ", si);
+        lastNote = preSequence[preSequence.length-1];
         while(true){
             int bestNote = -1;
             float bestGauche = Integer.MAX_VALUE;
