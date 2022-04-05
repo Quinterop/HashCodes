@@ -15,13 +15,13 @@ public class Test{
     static int preSequence[];
     static int si[];
     static int nbrJouees=0;
-    static LinkedList<Integer> bufferNotes = new LinkedList<>();
-
+    static int lastNote;
 
     //Initialise le tableau des fréquences 
     private static void calculFrequences() {
         int moyenne = somme(notes);
-        System.out.println(moyenne);
+        System.out.println("Moyenne des notes : " + moyenne);
+        System.out.print("liste des fréquences : ");
         for(int i=1;i<frequences.length; i++){
             frequences[i] =(float) notes[i] / moyenne;
             System.out.print(frequences[i]+" ");
@@ -39,42 +39,34 @@ public class Test{
 
     // A-t-on déjà joué toute la séquence possible ?
     private static boolean stop() {
-        int currentNote = bufferNotes.get(bufferNotes.size()-1);
+        //int currentNote = bufferNotes.get(bufferNotes.size()-1);
         
         //return currentNote == getNbrOcc(currentNote); // ai == si
 
-        return bufferNotes.size()*(currentNote / somme(notes)) == getNbrOcc(currentNote);
+        return notes[lastNote]-1 == si[lastNote] && notes[lastNote]+1 == si[lastNote];
+
+        //return bufferNotes.size()*(currentNote / somme(notes)) == getNbrOcc(currentNote);
 
 }
-
-    // retourne nombre d'occurence d'une note
-    private static int getNbrOcc(int note) {
-        int occ = 0;
-        for (int i = 0 ; i < bufferNotes.size() ; i++) {
-            if (bufferNotes.get(i) == note) {
-                occ++;
-            }
-        }
-        return occ;
-    }
 
     public static void main(String[] args){
         parsing(args[0]);
         calculFrequences();
-        //GERER PRESEQUENCE ?
-        //INITIALISER SI[] ?
-        print(si);
-        for(int i=0;i<preSequence.length;i++){
-            bufferNotes.add(preSequence[i]);
-        }
+        print("Liste occurence par note : ", si);
         while(true){
             int bestNote = -1;
             float bestGauche = Integer.MAX_VALUE;
+
+            if(stop()){
+                System.out.println("INFINI");
+                nbrJouees-=preSequence.length;
+                break;
+            }
+
             for(int i=1; i<nombreNotes+1;i++){    
                 if(isJouable(i)){
                     if(bestNote == -1) {
-                        bestNote = i;
-                        
+                        bestNote = i;   
                     }
                     if(distanceGauche(i)<bestGauche) {
                         bestNote = i;
@@ -91,20 +83,17 @@ public class Test{
                  //JOUER LA NOTE
                 si[bestNote]++;
                 nbrJouees++;
-                bufferNotes.add(bestNote);
-            }
-            if(stop()){
-                System.out.println("INFINI");
-                nbrJouees-=preSequence.length;
-                break;
+                lastNote = bestNote;
             }
         }
-        print(si);
+        print("Liste occurence par note (si) : ", si);
+        System.out.println("Dernière note jouée (ai) : " + notes[lastNote]);
     }
 
-    public static void print(int[] toto){
+    public static void print(String type, int[] toto){
+        System.out.print(type + " : ");
         for(int i=1;i<toto.length;i++){
-            System.out.print(toto[i]+" ");
+            System.out.print(toto[i] + " ");
         }
         System.out.println("");
     }
@@ -140,8 +129,8 @@ public class Test{
                     if(compteur==0){
                         nombreNotes=intLine[0];
                         longueurInit=intLine[1];
-                        System.out.print(nombreNotes+" "+longueurInit);
-                        System.out.println(" ");
+                        //System.out.print(nombreNotes+" "+longueurInit);
+                        //System.out.println(" ");
                     }
                     else if(compteur==1){
                         notes=new int[nombreNotes+1];
@@ -149,9 +138,9 @@ public class Test{
                         frequences = new float[nombreNotes+1];
                         for(int i=1;i<notes.length;i++){
                             notes[i]=intLine[i-1];
-                            System.out.print(notes[i]+" ");
+                            //System.out.print(notes[i]+" ");
                         }
-                        System.out.println("");
+                        //System.out.println("");
             
                     }
                     else{
@@ -159,9 +148,9 @@ public class Test{
                         nbrJouees=preSequence.length;
                         for(int i=0;i<intLine.length;i++){
                             preSequence[i]=intLine[i];
-                            System.out.print(preSequence[i]+" ");
+                            //System.out.print(preSequence[i]+" ");
                         }
-                        System.out.println("");
+                        //System.out.println("");
                         initSi();
                     }
                     compteur++;
