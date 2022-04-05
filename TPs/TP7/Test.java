@@ -80,7 +80,6 @@ public class Test{
             }
             else{ 
                 System.out.println("Note jouee : " + bestNote);
-                 //JOUER LA NOTE
                 si[bestNote]++;
                 nbrJouees++;
                 lastNote = bestNote;
@@ -106,12 +105,6 @@ public class Test{
         return(si[index]-frequences[index]*nbrJouees-1);
     }
 
-    public static float[] decalage(int index){
-        float[] decale=new float[2];
-        decale[0]=(nbrJouees*frequences[index])-1;
-        decale[1]=(nbrJouees*frequences[index])+1;
-        return decale;
-    }
     
     private static void parsing(String path) {
 		// ouverture du fichier passé en argument
@@ -129,8 +122,6 @@ public class Test{
                     if(compteur==0){
                         nombreNotes=intLine[0];
                         longueurInit=intLine[1];
-                        //System.out.print(nombreNotes+" "+longueurInit);
-                        //System.out.println(" ");
                     }
                     else if(compteur==1){
                         notes=new int[nombreNotes+1];
@@ -138,19 +129,14 @@ public class Test{
                         frequences = new float[nombreNotes+1];
                         for(int i=1;i<notes.length;i++){
                             notes[i]=intLine[i-1];
-                            //System.out.print(notes[i]+" ");
                         }
-                        //System.out.println("");
-            
                     }
                     else{
                         preSequence=new int[intLine.length];
                         nbrJouees=preSequence.length;
                         for(int i=0;i<intLine.length;i++){
                             preSequence[i]=intLine[i];
-                            //System.out.print(preSequence[i]+" ");
                         }
-                        //System.out.println("");
                         initSi();
                     }
                     compteur++;
