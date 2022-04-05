@@ -1,7 +1,10 @@
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.*;
+
 
 public class Test{
 
@@ -12,15 +15,18 @@ public class Test{
     static int preSequence[];
     static int si[];
     static int nbrJouees=0;
-    static LinkedList<Integer> bufferNotes;
-
+    static int lastNote;
 
     //Initialise le tableau des fréquences 
     private static void calculFrequences() {
         int moyenne = somme(notes);
-        for(int i=0;i<frequences.length; i++){
-            frequences[i] = i / moyenne;
+        System.out.println("Moyenne des notes : " + moyenne);
+        System.out.print("liste des fréquences : ");
+        for(int i=1;i<frequences.length; i++){
+            frequences[i] =(float) notes[i] / moyenne;
+            System.out.print(frequences[i]+" ");
         }
+        System.out.println();
     }
 
     public static int somme(int[] toto){
@@ -33,53 +39,57 @@ public class Test{
 
     // A-t-on déjà joué toute la séquence possible ?
     private static boolean stop() {
-        int currentNote = bufferNotes.get(bufferNotes.size());
-        return bufferNotes.size()*(currentNote / somme(notes)) == getNbrOcc(currentNote);
-    }
 
-    // retourne nombre d'occurence d'une note
-    private static int getNbrOcc(int note) {
-        int occ = 0;
-        for (int i = 0 ; i < bufferNotes.size() ; i++) {
-            if (bufferNotes.get(i) == note) {
-                occ++;
-            }
-        }
-        return occ;
-    }
+        return notes[lastNote]-1 < si[lastNote] && notes[lastNote]+1 < si[lastNote];
 
-	    public static void main(String[] args){
+}
+
+    public static void main(String[] args){
         parsing(args[0]);
         calculFrequences();
-        //GERER PRESEQUENCE ?
-        //INITIALISER SI[] ?
+        print("Liste occurence par note : ", si);
+        lastNote = preSequence[preSequence.length-1];
         while(true){
-            if(stop()){
-                System.out.println("INFINI");
-            }
             int bestNote = -1;
             float bestGauche = Integer.MAX_VALUE;
-            for(int i=0; i<nombreNotes;i++){
-                
-                if(isJouable(notes[i])){
-                    if(bestNote==-1) bestNote = notes[i];
-                    if(distanceGauche(notes[i])<bestGauche){
-                        bestNote = notes[i];
-                        bestGauche = distanceGauche(notes[i]);
+
+            if(stop()){
+                System.out.println("INFINI");
+                nbrJouees-=preSequence.length;
+                break;
+            }
+
+            for(int i=1; i<nombreNotes+1;i++){    
+                if(isJouable(i)){
+                    if(bestNote == -1) {
+                        bestNote = i;   
+                    }
+                    if(distanceGauche(i)<bestGauche) {
+                        bestNote = i;
+                        bestGauche = distanceGauche(i);
                     }
                 }
             }
-            if(bestNote==-1){ System.out.println("BLOQUE");
-        }else{ 
-            System.out.println("Note jouée :"+bestNote);
-            //JOUER LA NOTE
+            if(bestNote==-1) { 
+                System.out.println("BLOQUE");
+                break;
+            }
+            else{ 
+                System.out.println("Note jouee : " + notes[bestNote]);
+                 //JOUER LA NOTE
+                si[bestNote]++;
+                nbrJouees++;
+                lastNote = bestNote;
+            }
         }
+        print("Liste occurence par note (si) : ", si);
+        System.out.println("Dernière note jouée (ai) : " + notes[lastNote]);
     }
-}
 
-    public static void print(int[] toto){
-        for(int i=0;i<toto.length;i++){
-            System.out.print(toto[i]);
+    public static void print(String type, int[] toto){
+        System.out.print(type + " : ");
+        for(int i=1;i<toto.length;i++){
+            System.out.print(toto[i] + " ");
         }
         System.out.println("");
     }
@@ -99,54 +109,66 @@ public class Test{
         return decale;
     }
     
-    
     private static void parsing(String path) {
 		// ouverture du fichier passé en argument
 		File f = new File(path);
-        int notes[];
         int compteur=0;
 		// lecture du fichier et ajout de chaque ligne dans l'ArrayList de type String
         try (Scanner sc = new Scanner(f)) {
             while (sc.hasNextLine()) {
                 String[] strLine = sc.nextLine().split(" ");
                 int[] intLine = new int[strLine.length];
-                for (int i = 0 ; i < intLine.length ; i++) {
-                    intLine[i] = Integer.parseInt(strLine[i]);
-                }
-                if(compteur==0){
-                    nombreNotes=intLine[0];
-                    longueurInit=intLine[1];
-                    System.out.print(nombreNotes+" "+longueurInit);
-                    System.out.println(" ");
-                }
-                else if(compteur==1){
-                    notes=new int[intLine.length];
-                    si=new int[intLine.length];
-                    for(int i=0;i<intLine.length;i++){
-                        notes[i]=intLine[i];
-                        System.out.print(notes[i]+" ");
+                try {
+                    for (int i = 0 ; i < intLine.length ; i++) {
+                        intLine[i] = Integer.parseInt(strLine[i]);
                     }
-                    System.out.println("");
-        
-                }
-                else{
-                    preSequence=new int[intLine.length];
-                    for(int i=0;i<intLine.length;i++){
-                        preSequence[i]=intLine[i];
-                        System.out.print(preSequence[i]+" ");
+                    if(compteur==0){
+                        nombreNotes=intLine[0];
+                        longueurInit=intLine[1];
+                        //System.out.print(nombreNotes+" "+longueurInit);
+                        //System.out.println(" ");
                     }
-                    System.out.println("");
-                    
-                }
-                compteur++;
+                    else if(compteur==1){
+                        notes=new int[nombreNotes+1];
+                        si=new int[nombreNotes+1];
+                        frequences = new float[nombreNotes+1];
+                        for(int i=1;i<notes.length;i++){
+                            notes[i]=intLine[i-1];
+                            //System.out.print(notes[i]+" ");
+                        }
+                        //System.out.println("");
+            
+                    }
+                    else{
+                        preSequence=new int[intLine.length];
+                        nbrJouees=preSequence.length;
+                        for(int i=0;i<intLine.length;i++){
+                            preSequence[i]=intLine[i];
+                            //System.out.print(preSequence[i]+" ");
+                        }
+                        //System.out.println("");
+                        initSi();
+                    }
+                    compteur++;
+                } catch (NumberFormatException e) {
+                    System.out.println("Mauvais format de donnees pour : " + path);
+                    System.exit(1);
+                } 
+
             } 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
         }
 	}
 
+    public static void initSi(){
+        for(int i=0;i<preSequence.length;i++){
+            si[preSequence[i]]++;
+        }
+    }
+
     // écriture du résultat dans un fichier res.out
-    /*private static void writeOutput(int res) {
+    private static void writeOutput(int res) {
         try {
             System.out.println("Debut ecriture resultat");
             File outputfile = new File("res.out");
@@ -158,10 +180,10 @@ public class Test{
             bw.write(res);
             bw.close();
             System.out.println("Fin ecriture resultat");
-
+ 
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }*/
+    }
 
 }
