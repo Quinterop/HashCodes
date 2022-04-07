@@ -43,6 +43,14 @@ public class Test{
         return notes[lastNote]-1 < si[lastNote] && notes[lastNote]+1 < si[lastNote];
 
 }
+    public static boolean isOk(){
+        for(int i=0;i<notes.length;i++){
+            if(!isJouable(i)){
+                return false;
+            }
+        }
+        return true;
+    }
 
     public static void main(String[] args){
         parsing(args[0]);
@@ -70,8 +78,11 @@ public class Test{
                     }
                 }
             }
-            if(bestNote==-1) { 
+            /*if(bestNote==-1) { 
                 System.out.println("BLOQUE");
+                break;
+            }*/if(!isOk()){
+                System.out.println("BLOBLO");
                 break;
             }
             else{ 
@@ -81,6 +92,7 @@ public class Test{
                 nbrJouees++;
                 lastNote = bestNote;
             }
+            
         }
         print("Liste occurence par note (si) : ", si);
         System.out.println("Dernière note jouée (ai) : " + notes[lastNote]);
