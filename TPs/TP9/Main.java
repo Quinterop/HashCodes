@@ -1,5 +1,3 @@
-package TPs.TP9;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -37,9 +35,10 @@ public class Main {
                     int[] dominos = new int[intLine.length];
                     for(int i=0;i<intLine.length;i++){
                         dominos[i]=intLine[i];
+                        System.out.print(dominos[i]+" ");
                     }
+                    System.out.println();
                     toto.put(compteur-1, dominos);
-                    System.out.println(dominos);
                 }
                 compteur++;
             }
@@ -47,4 +46,9 @@ public class Main {
             e.printStackTrace();
         }
     }
+
+    public static void main(String[] args) {
+        parsing(args[0]);
+    }
+
 }
