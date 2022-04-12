@@ -1,7 +1,9 @@
-package TPs.TP9;
-
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -19,7 +21,7 @@ public class Main {
     static HashMap<Integer,int[]> dominosListAbs = new HashMap<>();
     LinkedList<ArrayList<int[]>> results = new LinkedList<>();
     
-    private static void createConfig() {
+    private static ArrayList<int[]> createConfig() {
 
         int linkedListPos = 0;
         int arrayListPos = 0;
@@ -36,13 +38,11 @@ public class Main {
 
                 // On évalue le cas où on se place sur la première ligne à la première case
                 if (tabPos == 0 && arrayListPos == 0) {
+                    int[] tab = new int[tailleMax];
+                    dominosGrid.add(tab);
                     dominosGrid.get(arrayListPos)[tabPos] = d.getKey();
                     dominosToRemove.add(d.getKey());
                     tabPos++;
-                    if (tabPos >= tailleMax) {
-                        tabPos = 0;
-                        arrayListPos++;
-                    }
                     continue;
                 }
     
@@ -69,10 +69,6 @@ public class Main {
                         dominosGrid.get(arrayListPos)[tabPos] = d.getKey();
                         dominosToRemove.add(d.getKey());
                         tabPos++;
-                        if (tabPos >= tailleMax) {
-                            tabPos = 0;
-                            arrayListPos++;
-                        }
                         continue;
                     }
                 }
@@ -95,7 +91,7 @@ public class Main {
             }
 
             if (dominosGrid.isEmpty()) {
-                break;
+                return dominosGrid;
             }
         }
 
@@ -139,9 +135,33 @@ public class Main {
         }
     }
 
+    private static void writeOutput(ArrayList<int[]> resDominos) {
+        try {
+            System.out.println("Debut ecriture resultat");
+            File outputfile = new File("res.out");
+            outputfile.createNewFile();
+
+            FileWriter fw = new FileWriter(outputfile.getAbsoluteFile());
+            PrintWriter bw = new PrintWriter(fw);
+            
+            for (int j = 0 ; j < tailleMax ; j++) {
+                for (int i = 0 ; i < resDominos.size() ; i++) {
+                    bw.print(resDominos.get(i) + " ");
+                }
+            }
+
+            bw.close();
+            System.out.println("Fin ecriture resultat");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public static void main(String[] args) {
         parsing(args[0]);
         createConfig();
-        
+
     }
 }
