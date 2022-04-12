@@ -3,7 +3,10 @@ package TPs.TP9;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Map.Entry;
 
 public class Main {
 
@@ -12,8 +15,14 @@ public class Main {
     static int valMax;
     static int tailleMax;
     static int nbrDominos;
-    static HashMap<Integer,int[]> toto=new HashMap<>();
+    static HashMap<Integer,int[]> dominosList = new HashMap<>();
+    LinkedList<int[]> results = new LinkedList<>();
+    
+    private void testConfig() {
+        for (Entry<Integer, int[]> d : dominosList.entrySet()) {
 
+        }
+    }
 
     public static void parsing(String path) {
         // ouverture du fichier passé en argument
@@ -38,7 +47,7 @@ public class Main {
                     for(int i=0;i<intLine.length;i++){
                         dominos[i]=intLine[i];
                     }
-                    toto.put(compteur-1, dominos);
+                    dominosList.put(compteur-1, dominos);
                     System.out.println(dominos);
                 }
                 compteur++;
