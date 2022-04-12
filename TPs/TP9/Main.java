@@ -2,6 +2,7 @@ package TPs.TP9;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -15,13 +16,94 @@ public class Main {
     static int valMax;
     static int tailleMax;
     static int nbrDominos;
-    static HashMap<Integer,int[]> dominosList = new HashMap<>();
-    LinkedList<int[]> results = new LinkedList<>();
+    static HashMap<Integer,int[]> dominosListAbs = new HashMap<>();
+    LinkedList<ArrayList<int[]>> results = new LinkedList<>();
     
-    private void testConfig() {
-        for (Entry<Integer, int[]> d : dominosList.entrySet()) {
+    private static void createConfig() {
 
+        int linkedListPos = 0;
+        int arrayListPos = 0;
+        int tabPos = 0;
+        int blockCount = 0;
+        ArrayList<int[]> dominosGrid = new ArrayList<>();
+
+        HashMap<Integer,int[]> dominosList = dominosListAbs;
+        LinkedList<Integer> dominosToRemove = new LinkedList<Integer>();
+
+        while (true) {
+
+            for (Entry<Integer, int[]> d : dominosList.entrySet()) {
+
+                // On évalue le cas où on se place sur la première ligne à la première case
+                if (tabPos == 0 && arrayListPos == 0) {
+                    dominosGrid.get(arrayListPos)[tabPos] = d.getKey();
+                    dominosToRemove.add(d.getKey());
+                    tabPos++;
+                    if (tabPos >= tailleMax) {
+                        tabPos = 0;
+                        arrayListPos++;
+                    }
+                    continue;
+                }
+    
+                // id du dominos à la position courante
+                int index = dominosGrid.get(arrayListPos)[tabPos-1];
+    
+                // On évalue les cas où on se place sur la première ligne et pas à la première case
+                if (tabPos != 0 && arrayListPos == 0) {
+                    if (d.getValue()[4] == dominosGrid.get(index)[2]) {
+                        dominosGrid.get(arrayListPos)[tabPos] = d.getKey();
+                        dominosToRemove.add(d.getKey());
+                        tabPos++;
+                        if (tabPos >= tailleMax) {
+                            tabPos = 0;
+                            arrayListPos++;
+                        }
+                        continue;
+                    }
+                }
+    
+                // On évalue les cas où on ne se place pas sur la première ligne et où on est sur la première case
+                if (tabPos == 0 && arrayListPos > 0) {
+                    if (d.getValue()[1] == dominosGrid.get(index)[3]) {
+                        dominosGrid.get(arrayListPos)[tabPos] = d.getKey();
+                        dominosToRemove.add(d.getKey());
+                        tabPos++;
+                        if (tabPos >= tailleMax) {
+                            tabPos = 0;
+                            arrayListPos++;
+                        }
+                        continue;
+                    }
+                }
+    
+                // On évalue les cas où on ne se place ni sur la première ligne ni sur la première case
+                if (d.getValue()[1] == dominosGrid.get(index)[3] && d.getValue()[4] == dominosGrid.get(index)[2]) {
+                    dominosGrid.get(arrayListPos)[tabPos] = d.getKey();
+                    dominosToRemove.add(d.getKey());
+                    tabPos++;
+                    if (tabPos >= tailleMax) {
+                        tabPos = 0;
+                        arrayListPos++;
+                    }
+                    continue;
+                }
+            }
+
+            for(Integer d : dominosToRemove) {
+                dominosList.remove(d);
+            }
+
+            if (dominosGrid.isEmpty()) {
+                break;
+            }
         }
+
+
+    }
+
+    private static void testConfig() {
+
     }
 
     public static void parsing(String path) {
@@ -47,7 +129,7 @@ public class Main {
                     for(int i=0;i<intLine.length;i++){
                         dominos[i]=intLine[i];
                     }
-                    dominosList.put(compteur-1, dominos);
+                    dominosListAbs.put(compteur-1, dominos);
                     System.out.println(dominos);
                 }
                 compteur++;
@@ -55,5 +137,11 @@ public class Main {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) {
+        parsing(args[0]);
+        createConfig();
+        
     }
 }
