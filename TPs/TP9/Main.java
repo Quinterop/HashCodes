@@ -23,21 +23,21 @@ public class Main {
     
     private static ArrayList<int[]> createConfig() {
 
-        int linkedListPos = 0;
         int arrayListPos = 0;
         int tabPos = 0;
-        int blockCount = 0;
         ArrayList<int[]> dominosGrid = new ArrayList<>();
 
         HashMap<Integer,int[]> dominosList = dominosListAbs;
         LinkedList<Integer> dominosToRemove = new LinkedList<Integer>();
 
-        while (true) {
+        // Tant qu'il y a des dominos à placer, on continue d'évaluer
+        while (!dominosGrid.isEmpty()) {
 
             for (Entry<Integer, int[]> d : dominosList.entrySet()) {
 
                 // On évalue le cas où on se place sur la première ligne à la première case
                 if (tabPos == 0 && arrayListPos == 0) {
+                    System.out.println("premier domino placé");
                     int[] tab = new int[tailleMax];
                     dominosGrid.add(tab);
                     dominosGrid.get(arrayListPos)[tabPos] = d.getKey();
@@ -51,7 +51,9 @@ public class Main {
     
                 // On évalue les cas où on se place sur la première ligne et pas à la première case
                 if (tabPos != 0 && arrayListPos == 0) {
+                    // si la droite du dominos précédent est compatible avec la gauche du dominos courant
                     if (d.getValue()[4] == dominosGrid.get(index)[2]) {
+                        System.out.println("domino placé sur la première ligne à la case : " + tabPos);
                         dominosGrid.get(arrayListPos)[tabPos] = d.getKey();
                         dominosToRemove.add(d.getKey());
                         tabPos++;
@@ -65,7 +67,9 @@ public class Main {
     
                 // On évalue les cas où on ne se place pas sur la première ligne et où on est sur la première case
                 if (tabPos == 0 && arrayListPos > 0) {
+                    // si le bas du domino d'au-dessus est compatible avec le haut du domino courant
                     if (d.getValue()[1] == dominosGrid.get(index)[3]) {
+                        System.out.println("domino placé sur la première case de la ligne : " + arrayListPos);
                         dominosGrid.get(arrayListPos)[tabPos] = d.getKey();
                         dominosToRemove.add(d.getKey());
                         tabPos++;
@@ -73,8 +77,13 @@ public class Main {
                     }
                 }
     
-                // On évalue les cas où on ne se place ni sur la première ligne ni sur la première case
+                /* On évalue les cas où on ne se place ni sur la première ligne ni sur la première case
+                 * --------
+                 * Donc si la droite du dominos précédent est compatible avec la gauche du dominos courant
+                 * et que la partie haute du dominos précédent est compatible avec la partie basse du dominos courant
+                 */
                 if (d.getValue()[1] == dominosGrid.get(index)[3] && d.getValue()[4] == dominosGrid.get(index)[2]) {
+                    System.out.println("domino placé sur la case : " + tabPos + " de la ligne : " + arrayListPos);
                     dominosGrid.get(arrayListPos)[tabPos] = d.getKey();
                     dominosToRemove.add(d.getKey());
                     tabPos++;
@@ -86,15 +95,14 @@ public class Main {
                 }
             }
 
+            // suppression des dominos déjà ajoutés
             for(Integer d : dominosToRemove) {
                 dominosList.remove(d);
             }
 
-            if (dominosGrid.isEmpty()) {
-                return dominosGrid;
-            }
         }
 
+        return dominosGrid;
 
     }
 
@@ -161,7 +169,7 @@ public class Main {
 
     public static void main(String[] args) {
         parsing(args[0]);
-        createConfig();
+        writeOutput(createConfig());
 
     }
 }
